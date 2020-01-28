@@ -7,14 +7,15 @@
     tools:context=".Activity.CartActivity">
 
     <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,6 +23,20 @@
         app:lottie_enableMergePathsForKitKatAndAbove="true"
         app:lottie_fileName="empty_cart.json"
         app:lottie_loop="true" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="goBack"
+        android:layout_marginBottom="200dp"
+        android:gravity="center"
+        android:text="Cart is empty.Go back and start shopping!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 

@@ -82,14 +82,11 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
     Map<String, String> header;
     DBHelper dbHelper;
     private HorizontalCategoryAdapter mAdapter;
-//    private GridProductViewAdapter gridProductViewAdapter;
     private GridProductRankingViewAdapter gridProductRankingViewAdapter;
 
 
     List<Category> categories = new ArrayList<>();
     List<Product> products = new ArrayList<>();
-    List<Variant> variants = new ArrayList<>();
-    List<Tax> taxes = new ArrayList<>();
     List<Ranking> rankings = new ArrayList<>();
     HashMap<Integer,Product> integerProductHashMap = new HashMap<>();
     private Drawer drawer;
@@ -136,9 +133,7 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
     //    -----------------------------------code for toolbar START---------------------------------
     private void setupToolbar() {
         setSupportActionBar(toolbar);
-//        toolbar.setTitle("");
         toolbar.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-//        toolbar.setMenu();
     }
 
     @Override
@@ -239,24 +234,6 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
     }
 
 
-//    private void inflateBannerList(final BannersResponse bannersResponse1) {
-//        for (int i = 0; i < bannersResponse1.getCount(); i++) {
-//            final BannersResponse.Banner banner = bannersResponse1.getBanners().get(i);
-//            DefaultSliderView defaultSliderView = new DefaultSliderView(getActivity());
-//            defaultSliderView.error(R.drawable.banner_place_holder)
-//                    .empty(R.drawable.banner_place_holder)
-//                    .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-//                        @Override
-//                        public void onSliderClick(BaseSliderView slider) {
-//                            bannerClickListener(banner);
-//                        }
-//                    }).image(banner.getImageUrl())
-//                    .setScaleType(BaseSliderView.ScaleType.Fit);
-//            sliderLayout.addSlider(defaultSliderView);
-////            sliderLayout.startAutoCycle();
-//        }
-//    }
-
     private void inflateDummyBanner() {
         DefaultSliderView textSliderView = new DefaultSliderView(this);
         textSliderView.error(R.drawable.productplaceholder)
@@ -273,12 +250,10 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
         Timber.d(">>>>>>>>>success " + mainItems.toString());
         categories.clear();
         rankings.clear();
-        categories = mainItems.getCategories();
-        rankings = mainItems.getRankings();
-
+        categories.addAll(mainItems.getCategories());
+        rankings.addAll(mainItems.getRankings());
 
         inflateRecyclerViewAdapter(recyclerView1, mainItems.getCategories());
-
         inflateRankingSpinner(rankings);
         integerProductHashMap = getAllProductHashMapFromCategories(products,categories);
 
@@ -287,10 +262,8 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
     private void inflateRankingSpinner(List<Ranking> rankings1) {
         spinnerRanking.setText(getResources().getString(R.string.sort_by));
         List<String> rankingLabel = new ArrayList<>();
-        int i = 0;
         for (Ranking ranking : rankings1) {
             rankingLabel.add(ranking.getRanking());
-            i++;
         }
         spinnerRanking.setItems(rankingLabel);
     }
@@ -346,7 +319,6 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
 
     private void moveToProductListingActivity(int pos) {
         startActivity(new Intent(MainActivity.this, ProductListActivity.class));
-//                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK));
         MessageEvent messageEvent = new MessageEvent(Constants.PRODUCTLISTEVENTDATA);
         messageEvent.setCategories(categories);
         messageEvent.setRankings(rankings);
@@ -376,31 +348,6 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
         Timber.d(">>>>>>>>>error  " + message);
     }
 
-//    private void bannerClickListener(BannersResponse.Banner banner) {
-//        if (banner != null) {
-//            if (banner.getInAppRedirect()) {
-//                if (banner.getRedirectOptions().getType().equalsIgnoreCase("contest")) {
-//                    Intent intent = new Intent(getActivity(), AccountWebviewActivity.class);
-//                    intent.putExtra("url", banner.getUrl());
-//                    intent.putExtra("title", "Contest");
-//                    intent.putExtra("from", "homefragment");
-//                    Objects.requireNonNull(getActivity()).startActivity(intent);
-//                } else if (banner.getRedirectOptions().getType().equalsIgnoreCase("exchange")) {
-//                    String baseCurrency = banner.getRedirectOptions().getBaseCurrency();
-//                    String targetCurrency = banner.getRedirectOptions().getTargetCurrency();
-//                    ((MainActivity) Objects.requireNonNull(getActivity())).setBottomItem(2);
-//                    ((MainActivity) Objects.requireNonNull(getActivity())).loadFragment(new TradeFragmentViewPagerFragment(baseCurrency, targetCurrency, "buy", false));
-//                }
-//            } else {
-//                Intent intent = new Intent(getActivity(), AccountWebviewActivity.class);
-//                intent.putExtra("url", banner.getUrl());
-//                intent.putExtra("title", "Koinex");
-//                intent.putExtra("from", "homefragment");
-//                Objects.requireNonNull(getActivity()).startActivity(intent);
-//            }
-//        }
-//
-//    }
 
 
     @Override
