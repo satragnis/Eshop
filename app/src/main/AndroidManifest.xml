@@ -16,27 +16,23 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.CartActivity"></activity>
+        <activity android:name=".Activity.RegisterActivity"></activity>
+        <activity android:name=".Activity.LoginActivity" />
+        <activity android:name=".Activity.CartActivity" />
         <activity android:name=".Activity.NotificationActivity" />
         <activity android:name=".Activity.ProductListActivity" />
         <activity android:name=".Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.MainActivity" /> <!-- <activity -->
-        <!-- android:name="studios.codelight.smartloginlibrary.SmartLoginActivity" -->
-        <!-- android:theme="@style/AppTheme" /> -->
-        <!--<activity-->
-            <!--android:name="com.facebook.FacebookActivity"-->
-            <!--android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"-->
-            <!--android:label="@string/app_name"-->
-            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
+        <activity android:name=".Activity.MainActivity" />
     </application>
 
 </manifest>

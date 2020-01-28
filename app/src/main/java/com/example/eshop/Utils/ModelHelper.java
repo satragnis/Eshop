@@ -9,7 +9,13 @@ import java.util.List;
 
 public class ModelHelper {
 
-
+    /**
+     * Since each category has a sub cat, and subcat  id is the same as cat id, there is a traversal required to reach the lowest cat id with no sub cat
+     * @param products
+     * @param categories
+     * @param position
+     * @return
+     */
     public static List<Product> getProductFromCategoryByPosition(List<Product> products, List<Category> categories, int position) {
         List<Integer> childCats = categories.get(position).getChildCategories();
         products.clear();

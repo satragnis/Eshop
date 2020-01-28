@@ -1,6 +1,7 @@
 package com.example.eshop.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.eshop.Activity.LoginActivity;
 import com.example.eshop.Model.Category;
 import com.example.eshop.Model.Product;
 import com.example.eshop.Model.ProductRanking;
@@ -57,7 +59,7 @@ public class GridProductRankingViewAdapter extends RecyclerView.Adapter {
         holder.addToCartBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                context.startActivity(new Intent(context, LoginActivity.class));
             }
         });
 
@@ -69,7 +71,7 @@ public class GridProductRankingViewAdapter extends RecyclerView.Adapter {
         for (int j=0;j<variants.size();j++) {
             Variant variant = variants.get(j);
             Chip chip = new Chip(context);
-            if(variant.getColor()!=null && variant.getSize()!=null && variant.getPrice()!=null){
+            if(variant.getColor()!=null && variant.getPrice()!=null){
                 chip.setClickable(true);
                 chip.setEnabled(true);
                 chip.setCheckable(true);
@@ -82,6 +84,8 @@ public class GridProductRankingViewAdapter extends RecyclerView.Adapter {
                 holder.addToCartBTN.setEnabled(false);
                 holder.addToCartBTN.setClickable(false);
             }
+            holder.addToCartBTN.setEnabled(false);
+            holder.addToCartBTN.setClickable(false);
             String color = variant.getColor()==null?"N/A":variant.getColor();
             String size  =  variant.getSize()==null?"N/A":variant.getSize();
             String price = variant.getPrice()==null?"------": String.valueOf(variant.getPrice());
@@ -98,6 +102,11 @@ public class GridProductRankingViewAdapter extends RecyclerView.Adapter {
                         Timber.d(">>>> variant size "+variants.get(finalJ).getSize());
                         Timber.d(">>>> variant price "+variants.get(finalJ).getPrice());
                         Timber.d(">>>> variant id "+variants.get(finalJ).getId());
+                        holder.addToCartBTN.setEnabled(true);
+                        holder.addToCartBTN.setClickable(true);
+                    }else{
+                        holder.addToCartBTN.setEnabled(false);
+                        holder.addToCartBTN.setClickable(false);
                     }
                 }
             });

@@ -110,7 +110,10 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
                 makeAPICalls();
             }
         });
+        setupSpinnerRanking();
+    }
 
+    private void setupSpinnerRanking() {
         spinnerRanking.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
@@ -119,9 +122,15 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
                 inflateProductRankingAdapter(productRankings,integerProductHashMap);
             }
         });
-
+        spinnerRanking.setOnNothingSelectedListener(new MaterialSpinner.OnNothingSelectedListener() {
+            @Override
+            public void onNothingSelected(MaterialSpinner spinner) {
+                List<ProductRanking> productRankings = rankings.get(0).getProducts();
+                inflateProductRankingAdapter(productRankings,integerProductHashMap);
+            }
+        });
+        spinnerRanking.setSelectedIndex(0);
     }
-
 
 
     //    -----------------------------------code for toolbar START---------------------------------
@@ -172,6 +181,8 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
         //if you want to update the items at a later time it is recommended to keep it in a variable
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_home);
         SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_my_orders);
+        SecondaryDrawerItem item3 = new SecondaryDrawerItem().withIdentifier(3).withName(R.string.sign_in);
+        SecondaryDrawerItem item4 = new SecondaryDrawerItem().withIdentifier(4).withName(R.string.drawer_item_settings);
 
 //create the drawer and remember the `Drawer` result object
         drawer = new DrawerBuilder()
@@ -182,15 +193,41 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
                         item1,
                         new DividerDrawerItem(),
                         item2,
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings),
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_logout)
+                        item4,
+                        item3
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
+                        boolean result= false;
+                        switch (position){
+                            case 0: startActivity(new Intent(MainActivity.this, MainActivity.class));
+                            finish();
+                            result =true;
+                            break;
 
-                        return false;
+                            case 1:
+                                Utils.showToasty(MainActivity.this,getResources().getString(R.string.work_in_progress), Constants.INFO);
+                            result =true;
+                            break;
+
+                            case 2:
+                                Utils.showToasty(MainActivity.this,getResources().getString(R.string.work_in_progress), Constants.INFO);
+                            result =true;
+                            break;
+
+                            case 3:
+                                Utils.showToasty(MainActivity.this,getResources().getString(R.string.work_in_progress), Constants.INFO);
+                                result =true;
+                            break;
+
+                            case 4:
+                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                                result =true;
+                            break;
+                        }
+                        return result;
                     }
                 })
                 .build();
