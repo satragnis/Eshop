@@ -24,10 +24,10 @@ public AllProductDashboardPresenter(ProductDashboardInterface itemInterface){
     this.itemInterface = itemInterface;
 }
 
-    public void getAllProduct(Map<String, String> headerMap, JSONObject jsonObject){
+    public void getAllProduct(Map<String, String> headerMap,Map<String,String> body){
         ApiManager  apiManager = new ApiManager();
 
-        apiManager.getAllProductDashboard(headerMap,jsonObject)
+        apiManager.getAllProductDashboard(headerMap,body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ProductsDashboardResponseModel>() {

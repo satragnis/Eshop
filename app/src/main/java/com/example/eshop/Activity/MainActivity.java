@@ -20,19 +20,19 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.example.eshop.Adapter.GridProductRankingViewAdapter;
-//import com.example.eshop.Adapter.GridProductViewAdapter;
 import com.example.eshop.Adapter.HorizontalCategoryAdapter;
 import com.example.eshop.EshopDB.DBHelper;
 import com.example.eshop.Model.CategoryModel.CategoriesResponseModel;
 import com.example.eshop.Model.CategoryModel.Result;
 import com.example.eshop.Model.MessageEvent;
-import com.example.eshop.Model.ProductDashboardModel.ProductsDashboardResponseModel;
 
+
+import com.example.eshop.Model.ProductDashboardModel.ProductsDashboardResponseModel;
 import com.example.eshop.Network.Interfaces.CategoryListItemInterface;
-import com.example.eshop.Network.Interfaces.ItemInterface;
 import com.example.eshop.Network.Interfaces.ProductDashboardInterface;
+import com.example.eshop.Network.Interfaces.ProductListInterface;
 import com.example.eshop.Network.Presenter.AllCategoryPresenter;
-import com.example.eshop.Network.Presenter.ItemPresenter;
+import com.example.eshop.Network.Presenter.AllProductDashboardPresenter;
 import com.example.eshop.R;
 import com.example.eshop.Utils.Constants;
 import com.example.eshop.Utils.Utils;
@@ -58,7 +58,7 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 
-public class MainActivity extends AppCompatActivity implements CategoryListItemInterface{
+public class MainActivity extends AppCompatActivity implements CategoryListItemInterface, ProductDashboardInterface {
 
 
     @BindView(R.id.slider)
@@ -84,10 +84,8 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
 
 
     List<Result> categories = new ArrayList<>();
-//    List<Product> products = new ArrayList<>();
-//    List<Ranking> rankings = new ArrayList<>();
-//    HashMap<Integer,Product> integerProductHashMap = new HashMap<>();
     private Drawer drawer;
+    private String endLimit ="50";
 
 
     @Override
@@ -97,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
         ButterKnife.bind(this);
         setupMenu();
         setupToolbar();
-        makeAPICalls();
         dbHelper = new DBHelper(this);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -107,6 +104,13 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
         });
 //        setupSpinnerRanking();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        makeAPICalls();
+    }
+
 
 //    private void setupSpinnerRanking() {
 //        spinnerRanking.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
@@ -227,13 +231,17 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
     }
 
     private void getItemsData() {
-        Map<String,String> header = new HashMap<>();
-                header.put(Constants.Authorization,Constants.AuthorizationValue);
+        Map<String,String> header = Utils.getHeader(this);
+        Map<String,String> body = new HashMap<>();
+        body.put(Constants.END_LIMIT_ID_KEY,endLimit);
 
-//        ItemPresenter itemPresenter = new ItemPresenter(this);
-//        itemPresenter.getItemList(Utils.getHeaderData(this));
+        AllProductDashboardPresenter allProductDashboardPresenter = new AllProductDashboardPresenter(this);
+        allProductDashboardPresenter.getAllProduct(header,body);
+
         AllCategoryPresenter allCategoryPresenter =  new AllCategoryPresenter(this);
         allCategoryPresenter.getAllCategories(header);
+
+
 
     }
 
@@ -291,8 +299,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
                     if (viewHolder != null) {
                         Timber.d(">>>>> Cat selected " + viewHolder.getAdapterPosition());
                         Timber.d(">>>>> Cat selected " + categories.get(position).getCatName());
-//                        products.clear();
-//                        products = getProductFromCategoryByPosition(products,categories,position);
                         moveToProductListingActivity(categories.get(position));
                     }
                 }
@@ -311,24 +317,20 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
         startActivity(new Intent(MainActivity.this, ProductListActivity.class));
         MessageEvent messageEvent = new MessageEvent(Constants.PRODUCTLISTEVENTDATA);
         messageEvent.setCategories(category);
-//        messageEvent.setRankings(rankings);
-//        messageEvent.setProducts(products);
-//        messageEvent.setIntegerValue(pos);
         EventBus.getDefault().postSticky(messageEvent);
     }
 
-//    private void inflateProductRankingAdapter(List<ProductRanking> productRankings, HashMap<Integer, Product> integerProductHashMap) {
-//        gridProductRankingViewAdapter =
-//                new GridProductRankingViewAdapter(recyclerViewGrid,
-//                        productRankings,
-//                        integerProductHashMap,
-//                        MainActivity.this);
-//        recyclerViewGrid.setAdapter(gridProductRankingViewAdapter);
-//        recyclerViewGrid.setHasFixedSize(true);
-//        recyclerViewGrid.setLayoutManager(new GridLayoutManager(this, 2));
-//        recyclerViewGrid.getRecycledViewPool().clear();
-//        gridProductRankingViewAdapter.notifyDataSetChanged();
-//    }
+    private void inflateProductRankingAdapter(List<com.example.eshop.Model.ProductDashboardModel.Result> productDashboard) {
+        gridProductRankingViewAdapter =
+                new GridProductRankingViewAdapter(recyclerViewGrid,
+                        productDashboard,
+                        MainActivity.this);
+        recyclerViewGrid.setAdapter(gridProductRankingViewAdapter);
+        recyclerViewGrid.setHasFixedSize(true);
+        recyclerViewGrid.setLayoutManager(new GridLayoutManager(this, Utils.calculateNoOfColumns(this,180)));
+        recyclerViewGrid.getRecycledViewPool().clear();
+        gridProductRankingViewAdapter.notifyDataSetChanged();
+    }
 
 
 //    @Override
@@ -353,16 +355,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
 //        lottieAnimationView.setVisibility(View.GONE);
 //        Timber.d(">>>>>>>>>error  " + message);
 //    }
-
-
-
-
-
-
-
-
-
-
 
     @Override
     protected void onStart() {
@@ -393,19 +385,29 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
         lottieAnimationView.setVisibility(View.GONE);
         Timber.d(">>>>>>>>>success " + mainItems.toString());
         categories.clear();
-//        rankings.clear();
         categories.addAll(mainItems.getResult());
-//        rankings.addAll(mainItems.getRankings());
-
         inflateRecyclerViewAdapter(recyclerView1, mainItems.getResult());
-//        inflateRankingSpinner(rankings);
-//        integerProductHashMap = getAllProductHashMapFromCategories(products,categories);
+
     }
 
     @Override
     public void onCategoryResponseError(String message) {
         swipeRefreshLayout.setRefreshing(false);
         lottieAnimationView.setVisibility(View.GONE);
-        Timber.d(">>>>>>>>>error  " + message);
+        Utils.showToasty(this,message,Constants.ERROR);
+    }
+
+    @Override
+    public void onProductResponseSuccess(ProductsDashboardResponseModel mainItems) {
+        swipeRefreshLayout.setRefreshing(false);
+        lottieAnimationView.setVisibility(View.GONE);
+        inflateProductRankingAdapter(mainItems.getResult());
+    }
+
+    @Override
+    public void onProductResponseError(String message) {
+        swipeRefreshLayout.setRefreshing(false);
+        lottieAnimationView.setVisibility(View.GONE);
+        Utils.showToasty(this,message,Constants.ERROR);
     }
 }

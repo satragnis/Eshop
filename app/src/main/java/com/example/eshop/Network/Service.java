@@ -36,13 +36,14 @@ public interface Service {
 
 
     @POST(Urls.GETALLPRODUCTLIST)
-    Observable<ProductsDashboardResponseModel> getAllProductList(@HeaderMap Map<String,String> headers,@Body JSONObject jsonObject);
+    @FormUrlEncoded
+    Observable<ProductsDashboardResponseModel> getAllProductList(@HeaderMap Map<String,String> headers,@FieldMap Map<String,String> body);
 
     @GET(Urls.GETALLCATEGORIES)
     Observable<CategoriesResponseModel> getCategotyList(@HeaderMap Map<String,String> headers);
 
-    @POST(Urls.GETPRODUCTDETAILSBYID)
-    Observable<ProductDetailResponseModel> getProductById(@HeaderMap Map<String,String> headers, @Body JSONObject jsonObject);
+//    @POST(Urls.GETPRODUCTDETAILSBYID)
+//    Observable<ProductDetailResponseModel> getProductById(@HeaderMap Map<String,String> headers, @Body JSONObject jsonObject);
 
     @POST(Urls.GETPRODUCTLISTBYCATID)
     Observable<ProductListResponseModel> getProductListByCatId(@HeaderMap Map<String,String> headers,@Body JSONObject jsonObject);
@@ -51,5 +52,5 @@ public interface Service {
 
     @POST(Urls.GET_PRODUCT_DETAIL)
     @FormUrlEncoded
-    Observable<ProductDetail> getProductDetail(@HeaderMap  Map<String, String> headerMap, @FieldMap Map<String,String> headers);
+    Observable<ProductDetail> getProductDetail(@HeaderMap  Map<String, String> headerMap, @FieldMap Map<String,String> body);
 }

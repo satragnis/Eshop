@@ -16,28 +16,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.eshop.Activity.LoginActivity;
+import com.example.eshop.Activity.ProductDetailActivity;
 
-import com.example.eshop.Model.ProductDashboardModel.Result;
 import com.example.eshop.R;
+import com.example.eshop.Utils.Constants;
+import com.example.eshop.Utils.Utils;
 
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class GridProductRankingViewAdapter extends RecyclerView.Adapter {
     RecyclerView recyclerView;
-    HashMap<Integer,String> integerProductHashMap;
-    List<Result> productRankings;
+    List<com.example.eshop.Model.ProductDashboardModel.Result> productDashboard;
     Context context;
 
-    public GridProductRankingViewAdapter(RecyclerView recyclerView, List<Result> productRankings, HashMap<Integer,String> integerProductHashMap, Context context) {
+    public GridProductRankingViewAdapter(RecyclerView recyclerView,List<com.example.eshop.Model.ProductDashboardModel.Result> productDashboard, Context context) {
         this.recyclerView = recyclerView;
-        this.productRankings = productRankings;
-        this.integerProductHashMap = integerProductHashMap;
+        this.productDashboard = productDashboard;
         this.context = context;
     }
 
@@ -53,80 +50,19 @@ public class GridProductRankingViewAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder vholder, int i) {
         ViewHolder holder = ((ViewHolder)vholder);
-        holder.addToCartBTN.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, LoginActivity.class));
+                Intent intent = new Intent(context, ProductDetailActivity.class);
+                intent.putExtra(Constants.PRODUCT_ID_KEY,productDashboard.get(i).getId());
+                context.startActivity(intent);
             }
         });
-
-//        Integer productId = productRankings.get(i).getId();
-//        Product product = integerProductHashMap.get("0");
-        Result product = productRankings.get(i);
-        if(product==null)return;
-        holder.prodName.setText(product.getProductName());
-//        List<Variant> variants =  product.getVariants();
-        /*for (int j=0;j<variants.size();j++) {
-            Variant variant = variants.get(j);
-            Chip chip = new Chip(context);
-            if(variant.getColor()!=null && variant.getPrice()!=null){
-                chip.setClickable(true);
-                chip.setEnabled(true);
-                chip.setCheckable(true);
-                holder.addToCartBTN.setEnabled(true);
-                holder.addToCartBTN.setClickable(true);
-            }else{
-                chip.setClickable(false);
-                chip.setEnabled(false);
-                chip.setCheckable(false);
-                holder.addToCartBTN.setEnabled(false);
-                holder.addToCartBTN.setClickable(false);
-            }
-            holder.addToCartBTN.setEnabled(false);
-            holder.addToCartBTN.setClickable(false);
-            String color = variant.getColor()==null?"N/A":variant.getColor();
-            String size  =  variant.getSize()==null?"N/A":variant.getSize();
-            String price = variant.getPrice()==null?"------": String.valueOf(variant.getPrice());
-            chip.setText("Color: "+color
-                    +" | Size: "+size
-                    +" | Price: "+context.getResources().getString(R.string.rupees_symbol_label)+price);
-            holder.chipGroup.addView(chip);
-            int finalJ = j;
-            chip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked){
-                        Timber.d(">>>> variant color "+variants.get(finalJ).getColor());
-                        Timber.d(">>>> variant size "+variants.get(finalJ).getSize());
-                        Timber.d(">>>> variant price "+variants.get(finalJ).getPrice());
-                        Timber.d(">>>> variant id "+variants.get(finalJ).getId());
-                        holder.addToCartBTN.setEnabled(true);
-                        holder.addToCartBTN.setClickable(true);
-                    }else{
-                        holder.addToCartBTN.setEnabled(false);
-                        holder.addToCartBTN.setClickable(false);
-                    }
-                }
-            });
-        }*/
-        holder.chipGroup.setSingleSelection(true);
-//        holder.chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(ChipGroup chipGroup, int i) {
-//                chipGroup.getCheckedChipId();
-//                Timber.d(">>>> chip i "+i);
-//                Timber.d(">>>> chipGroup.getCheckedChipId(); "+chipGroup.getCheckedChipId());
-//
-//                if(i==-1){
-//                    holder.addToCartBTN.setEnabled(false);
-//                }
-//
-//            }
-//        });
-
         Glide.with(context)
-                .load("https://picsum.photos/200/100")
+                .load(productDashboard.get(i).getImageUrl())
+                .apply(Utils.getRequestOptionsForGlide())
                 .into(holder.imageView);
+        holder.prodName.setText(productDashboard.get(i).getProductName());
 
 
 
@@ -137,7 +73,7 @@ public class GridProductRankingViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return productRankings.size();
+        return productDashboard.size();
     }
 
 
@@ -148,8 +84,6 @@ public class GridProductRankingViewAdapter extends RecyclerView.Adapter {
         ImageView imageView;
         @BindView(R.id.addToCart)
         Button addToCartBTN;
-        @BindView(R.id.chip_group)
-        ChipGroup chipGroup;
         @BindView(R.id.tvProdName)
         TextView prodName;
 

@@ -17,6 +17,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.FieldMap;
 import rx.Observable;
 
 public class ApiManager {
@@ -31,8 +32,8 @@ public class ApiManager {
         return service.getProductList(headerMap);
     }
 
-    public Observable<ProductsDashboardResponseModel> getAllProductDashboard(Map<String, String> headerMap, JSONObject jsonObject){
-        return service.getAllProductList(headerMap,jsonObject);
+    public Observable<ProductsDashboardResponseModel> getAllProductDashboard(Map<String, String> headerMap,Map<String,String> body){
+        return service.getAllProductList(headerMap,body);
     }
 
     public Observable<ProductListResponseModel> getProductListByCatId(Map<String, String> headerMap, JSONObject jsonObject){
