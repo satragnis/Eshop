@@ -2,7 +2,6 @@ package com.example.eshop.EshopDB;
 
 import android.content.Context;
 
-import com.example.eshop.Model.MainItems;
 //import com.example.eshop.Model.RealmModel.ItemsDBModel;
 
 import io.realm.Realm;

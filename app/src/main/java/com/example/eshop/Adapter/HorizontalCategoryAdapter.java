@@ -9,7 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.eshop.Model.Category;
+
+import com.example.eshop.Model.CategoryModel.Result;
 import com.example.eshop.R;
 
 import java.util.List;
@@ -19,11 +20,11 @@ import butterknife.ButterKnife;
 
 public class HorizontalCategoryAdapter extends RecyclerView.Adapter {
     RecyclerView recyclerView;
-    List<Category> categories;
+    List<Result> categories;
     Context context;
     private View.OnClickListener onItemClickListener;
 
-    public HorizontalCategoryAdapter(RecyclerView recyclerView, List<Category> categories, Context context) {
+    public HorizontalCategoryAdapter(RecyclerView recyclerView, List<Result> categories, Context context) {
         this.recyclerView = recyclerView;
         this.categories = categories;
         this.context = context;
@@ -40,7 +41,7 @@ public class HorizontalCategoryAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
-        ((ViewHolder)holder).cattextView.setText(categories.get(i).getName());
+        ((ViewHolder)holder).cattextView.setText(categories.get(i).getCatName());
 
     }
 

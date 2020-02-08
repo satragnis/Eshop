@@ -1,13 +1,15 @@
 package com.example.eshop.Model;
 
+import com.example.eshop.Model.CategoryModel.Result;
+
 import java.util.List;
 
 public class MessageEvent {
     private String eventType;
     private int integerValue;
-    private List<Category> categories;
-    private List<Product> products;
-    private List<Ranking> rankings;
+    private Result category;
+//    private List<Product> products;
+//    private List<Ranking> rankings;
 
 
     public MessageEvent(String eventType) {
@@ -30,27 +32,27 @@ public class MessageEvent {
         this.integerValue = integerValue;
     }
 
-    public List<Category> getCategories() {
-        return categories;
+    public Result getCategories() {
+        return category;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
+    public void setCategories(Result category) {
+        this.category = category;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
+//    public List<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(List<Product> products) {
+//        this.products = products;
+//    }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public List<Ranking> getRankings() {
-        return rankings;
-    }
-
-    public void setRankings(List<Ranking> rankings) {
-        this.rankings = rankings;
-    }
+//    public List<Ranking> getRankings() {
+//        return rankings;
+//    }
+//
+//    public void setRankings(List<Ranking> rankings) {
+//        this.rankings = rankings;
+//    }
 }

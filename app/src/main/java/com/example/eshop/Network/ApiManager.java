@@ -1,6 +1,11 @@
 package com.example.eshop.Network;
 
+import com.example.eshop.Model.CategoryModel.CategoriesResponseModel;
 import com.example.eshop.Model.MainItems;
+import com.example.eshop.Model.ProductDashboardModel.ProductsDashboardResponseModel;
+import com.example.eshop.Model.ProductDetailResponseModel.ProductDetailResponseModel;
+
+import org.json.JSONObject;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +29,15 @@ public class ApiManager {
         return service.getProductList(headerMap);
     }
 
+    public Observable<ProductsDashboardResponseModel> getAllProductDashboard(Map<String, String> headerMap, JSONObject jsonObject){
+        return service.getAllProductList(headerMap,jsonObject);
+    }
+
+    public Observable<CategoriesResponseModel> getAllCategories(Map<String, String> headerMap){
+        return service.getCategotyList(headerMap);
+    }
+
+
 
 
     private Retrofit provideRetrofit(){
@@ -38,7 +52,8 @@ public class ApiManager {
 
         return new Retrofit.Builder()
                 .client(client)
-                .baseUrl("https://stark-spire-93433.herokuapp.com/")
+//                .baseUrl("https://stark-spire-93433.herokuapp.com/")
+                .baseUrl(Urls.BASEURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();

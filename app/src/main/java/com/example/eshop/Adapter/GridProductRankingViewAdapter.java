@@ -17,11 +17,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.eshop.Activity.LoginActivity;
-import com.example.eshop.Model.Category;
-import com.example.eshop.Model.Product;
-import com.example.eshop.Model.ProductRanking;
-import com.example.eshop.Model.Ranking;
-import com.example.eshop.Model.Variant;
+
+import com.example.eshop.Model.ProductDashboardModel.Result;
 import com.example.eshop.R;
 
 import java.util.HashMap;
@@ -33,11 +30,11 @@ import timber.log.Timber;
 
 public class GridProductRankingViewAdapter extends RecyclerView.Adapter {
     RecyclerView recyclerView;
-    HashMap<Integer,Product> integerProductHashMap;
-    List<ProductRanking> productRankings;
+    HashMap<Integer,String> integerProductHashMap;
+    List<Result> productRankings;
     Context context;
 
-    public GridProductRankingViewAdapter(RecyclerView recyclerView, List<ProductRanking> productRankings, HashMap<Integer,Product> integerProductHashMap, Context context) {
+    public GridProductRankingViewAdapter(RecyclerView recyclerView, List<Result> productRankings, HashMap<Integer,String> integerProductHashMap, Context context) {
         this.recyclerView = recyclerView;
         this.productRankings = productRankings;
         this.integerProductHashMap = integerProductHashMap;
@@ -63,12 +60,13 @@ public class GridProductRankingViewAdapter extends RecyclerView.Adapter {
             }
         });
 
-        Integer productId = productRankings.get(i).getId();
-        Product product = integerProductHashMap.get(productId);
+//        Integer productId = productRankings.get(i).getId();
+//        Product product = integerProductHashMap.get("0");
+        Result product = productRankings.get(i);
         if(product==null)return;
-        holder.prodName.setText(product.getName());
-        List<Variant> variants =  product.getVariants();
-        for (int j=0;j<variants.size();j++) {
+        holder.prodName.setText(product.getProductName());
+//        List<Variant> variants =  product.getVariants();
+        /*for (int j=0;j<variants.size();j++) {
             Variant variant = variants.get(j);
             Chip chip = new Chip(context);
             if(variant.getColor()!=null && variant.getPrice()!=null){
@@ -110,7 +108,7 @@ public class GridProductRankingViewAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
-        }
+        }*/
         holder.chipGroup.setSingleSelection(true);
 //        holder.chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
 //            @Override

@@ -9,13 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
-import com.example.eshop.Adapter.GridProductViewAdapter;
-import com.example.eshop.Model.Category;
+//import com.example.eshop.Adapter.GridProductViewAdapter;
+import com.example.eshop.Model.CategoryModel.Result;
 import com.example.eshop.Model.MessageEvent;
-import com.example.eshop.Model.Product;
-import com.example.eshop.Model.Ranking;
-import com.example.eshop.Model.Tax;
-import com.example.eshop.Model.Variant;
+
 import com.example.eshop.R;
 import com.example.eshop.Utils.Constants;
 
@@ -39,13 +36,14 @@ public class ProductListActivity extends AppCompatActivity {
 
 
 
-    private GridProductViewAdapter gridProductViewAdapter;
+//    private GridProductViewAdapter gridProductViewAdapter;
     SharedPreferences sharedPreferences;
-
-    List<Category> categories = new ArrayList<>();
-    List<Product> products = new ArrayList<>();
-    List<Tax> taxes = new ArrayList<>();
-    List<Ranking> rankings = new ArrayList<>();
+//
+//    List<Category> categories = new ArrayList<>();
+//    List<Product> products = new ArrayList<>();
+//    List<Tax> taxes = new ArrayList<>();
+//    List<Ranking> rankings = new ArrayList<>();
+    Result category;
     private int categoryPos;
 
 
@@ -72,21 +70,19 @@ public class ProductListActivity extends AppCompatActivity {
     }
 
 
-    private void inflateRecyclerProductAdapter(List<Product> products, List<Category> categories,int categoryPos) {
-//        if (getSupportFragmentManager() != null) {
-        gridProductViewAdapter =
-                new GridProductViewAdapter(recyclerViewGrid,
-                        categories,
-                        products,
-                        ProductListActivity.this);
-        recyclerViewGrid.setAdapter(gridProductViewAdapter);
-        recyclerViewGrid.setHasFixedSize(true);
-//        recyclerViewGrid.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerViewGrid.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        recyclerViewGrid.getRecycledViewPool().clear();
-        gridProductViewAdapter.notifyDataSetChanged();
-//        }
-    }
+//    private void inflateRecyclerProductAdapter(List<Product> products, List<Category> categories,int categoryPos) {
+//        gridProductViewAdapter =
+//                new GridProductViewAdapter(recyclerViewGrid,
+//                        categories,
+//                        products,
+//                        ProductListActivity.this);
+//        recyclerViewGrid.setAdapter(gridProductViewAdapter);
+//        recyclerViewGrid.setHasFixedSize(true);
+////        recyclerViewGrid.setLayoutManager(new GridLayoutManager(this, 2));
+//        recyclerViewGrid.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+//        recyclerViewGrid.getRecycledViewPool().clear();
+//        gridProductViewAdapter.notifyDataSetChanged();
+//    }
 
     @Override
     protected void onStart() {
@@ -117,11 +113,11 @@ public class ProductListActivity extends AppCompatActivity {
     public void onMessageEvent(MessageEvent messageEvent)
     {
         if(messageEvent.getEventType().equals(Constants.PRODUCTLISTEVENTDATA)){
-            categories = messageEvent.getCategories();
-            products = messageEvent.getProducts();
+            category = messageEvent.getCategories();
+//            products = messageEvent.getProducts();
             categoryPos = messageEvent.getIntegerValue();
-            categoryName.setText(categories.get(categoryPos).getName());
-            inflateRecyclerProductAdapter(products,categories,categoryPos);
+            categoryName.setText(category.getCatName());
+//            inflateRecyclerProductAdapter(products,categories,categoryPos);
         }
     }
 }

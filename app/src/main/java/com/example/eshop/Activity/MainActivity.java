@@ -20,18 +20,18 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.example.eshop.Adapter.GridProductRankingViewAdapter;
-import com.example.eshop.Adapter.GridProductViewAdapter;
+//import com.example.eshop.Adapter.GridProductViewAdapter;
 import com.example.eshop.Adapter.HorizontalCategoryAdapter;
 import com.example.eshop.EshopDB.DBHelper;
-import com.example.eshop.Model.Category;
-import com.example.eshop.Model.MainItems;
+import com.example.eshop.Model.CategoryModel.CategoriesResponseModel;
+import com.example.eshop.Model.CategoryModel.Result;
 import com.example.eshop.Model.MessageEvent;
-import com.example.eshop.Model.Product;
-import com.example.eshop.Model.ProductRanking;
-import com.example.eshop.Model.Ranking;
-import com.example.eshop.Model.Tax;
-import com.example.eshop.Model.Variant;
+import com.example.eshop.Model.ProductDashboardModel.ProductsDashboardResponseModel;
+
+import com.example.eshop.Network.Interfaces.CategoryListItemInterface;
 import com.example.eshop.Network.Interfaces.ItemInterface;
+import com.example.eshop.Network.Interfaces.ProductDashboardInterface;
+import com.example.eshop.Network.Presenter.AllCategoryPresenter;
 import com.example.eshop.Network.Presenter.ItemPresenter;
 import com.example.eshop.R;
 import com.example.eshop.Utils.Constants;
@@ -57,10 +57,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-import static com.example.eshop.Utils.ModelHelper.getProductFromCategoryByPosition;
-import static com.example.eshop.Utils.ModelHelper.getAllProductHashMapFromCategories;
 
-public class MainActivity extends AppCompatActivity implements ItemInterface {
+public class MainActivity extends AppCompatActivity implements CategoryListItemInterface{
 
 
     @BindView(R.id.slider)
@@ -85,10 +83,10 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
     private GridProductRankingViewAdapter gridProductRankingViewAdapter;
 
 
-    List<Category> categories = new ArrayList<>();
-    List<Product> products = new ArrayList<>();
-    List<Ranking> rankings = new ArrayList<>();
-    HashMap<Integer,Product> integerProductHashMap = new HashMap<>();
+    List<Result> categories = new ArrayList<>();
+//    List<Product> products = new ArrayList<>();
+//    List<Ranking> rankings = new ArrayList<>();
+//    HashMap<Integer,Product> integerProductHashMap = new HashMap<>();
     private Drawer drawer;
 
 
@@ -107,27 +105,27 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
                 makeAPICalls();
             }
         });
-        setupSpinnerRanking();
+//        setupSpinnerRanking();
     }
 
-    private void setupSpinnerRanking() {
-        spinnerRanking.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                Timber.d(">>>>> ranking selected " + rankings.get(position));
-                List<ProductRanking> productRankings = rankings.get(position).getProducts();
-                inflateProductRankingAdapter(productRankings,integerProductHashMap);
-            }
-        });
-        spinnerRanking.setOnNothingSelectedListener(new MaterialSpinner.OnNothingSelectedListener() {
-            @Override
-            public void onNothingSelected(MaterialSpinner spinner) {
-                List<ProductRanking> productRankings = rankings.get(0).getProducts();
-                inflateProductRankingAdapter(productRankings,integerProductHashMap);
-            }
-        });
-        spinnerRanking.setSelectedIndex(0);
-    }
+//    private void setupSpinnerRanking() {
+//        spinnerRanking.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+//                Timber.d(">>>>> ranking selected " + rankings.get(position));
+//                List<ProductRanking> productRankings = rankings.get(position).getProducts();
+//                inflateProductRankingAdapter(productRankings,integerProductHashMap);
+//            }
+//        });
+//        spinnerRanking.setOnNothingSelectedListener(new MaterialSpinner.OnNothingSelectedListener() {
+//            @Override
+//            public void onNothingSelected(MaterialSpinner spinner) {
+//                List<ProductRanking> productRankings = rankings.get(0).getProducts();
+//                inflateProductRankingAdapter(productRankings,integerProductHashMap);
+//            }
+//        });
+//        spinnerRanking.setSelectedIndex(0);
+//    }
 
 
     //    -----------------------------------code for toolbar START---------------------------------
@@ -229,8 +227,14 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
     }
 
     private void getItemsData() {
-        ItemPresenter itemPresenter = new ItemPresenter(this);
-        itemPresenter.getItemList(Utils.getHeaderData(this));
+        Map<String,String> header = new HashMap<>();
+                header.put(Constants.Authorization,Constants.AuthorizationValue);
+
+//        ItemPresenter itemPresenter = new ItemPresenter(this);
+//        itemPresenter.getItemList(Utils.getHeaderData(this));
+        AllCategoryPresenter allCategoryPresenter =  new AllCategoryPresenter(this);
+        allCategoryPresenter.getAllCategories(header);
+
     }
 
 
@@ -243,33 +247,19 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
         sliderLayout.addSlider(textSliderView);
     }
 
-    @Override
-    public void onItemResponseSuccess(MainItems mainItems) {
-        swipeRefreshLayout.setRefreshing(false);
-        lottieAnimationView.setVisibility(View.GONE);
-        Timber.d(">>>>>>>>>success " + mainItems.toString());
-        categories.clear();
-        rankings.clear();
-        categories.addAll(mainItems.getCategories());
-        rankings.addAll(mainItems.getRankings());
-
-        inflateRecyclerViewAdapter(recyclerView1, mainItems.getCategories());
-        inflateRankingSpinner(rankings);
-        integerProductHashMap = getAllProductHashMapFromCategories(products,categories);
-
-    }
-
-    private void inflateRankingSpinner(List<Ranking> rankings1) {
-        spinnerRanking.setText(getResources().getString(R.string.sort_by));
-        List<String> rankingLabel = new ArrayList<>();
-        for (Ranking ranking : rankings1) {
-            rankingLabel.add(ranking.getRanking());
-        }
-        spinnerRanking.setItems(rankingLabel);
-    }
 
 
-    private void inflateRecyclerViewAdapter(RecyclerView recyclerView, List<com.example.eshop.Model.Category> categories) {
+//    private void inflateRankingSpinner(List<Ranking> rankings1) {
+//        spinnerRanking.setText(getResources().getString(R.string.sort_by));
+//        List<String> rankingLabel = new ArrayList<>();
+//        for (Ranking ranking : rankings1) {
+//            rankingLabel.add(ranking.getRanking());
+//        }
+//        spinnerRanking.setItems(rankingLabel);
+//    }
+
+
+    private void inflateRecyclerViewAdapter(RecyclerView recyclerView, List<Result> categories) {
         mAdapter = new HorizontalCategoryAdapter(recyclerView, categories, this);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -300,10 +290,10 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
                     int position = viewHolder.getAdapterPosition();
                     if (viewHolder != null) {
                         Timber.d(">>>>> Cat selected " + viewHolder.getAdapterPosition());
-                        Timber.d(">>>>> Cat selected " + categories.get(position).getName());
-                        products.clear();
-                        products = getProductFromCategoryByPosition(products,categories,position);
-                        moveToProductListingActivity(position);
+                        Timber.d(">>>>> Cat selected " + categories.get(position).getCatName());
+//                        products.clear();
+//                        products = getProductFromCategoryByPosition(products,categories,position);
+                        moveToProductListingActivity(categories.get(position));
                     }
                 }
 
@@ -317,36 +307,60 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
     };
 
 
-    private void moveToProductListingActivity(int pos) {
+    private void moveToProductListingActivity(Result category) {
         startActivity(new Intent(MainActivity.this, ProductListActivity.class));
         MessageEvent messageEvent = new MessageEvent(Constants.PRODUCTLISTEVENTDATA);
-        messageEvent.setCategories(categories);
-        messageEvent.setRankings(rankings);
-        messageEvent.setProducts(products);
-        messageEvent.setIntegerValue(pos);
+        messageEvent.setCategories(category);
+//        messageEvent.setRankings(rankings);
+//        messageEvent.setProducts(products);
+//        messageEvent.setIntegerValue(pos);
         EventBus.getDefault().postSticky(messageEvent);
     }
 
-    private void inflateProductRankingAdapter(List<ProductRanking> productRankings, HashMap<Integer, Product> integerProductHashMap) {
-        gridProductRankingViewAdapter =
-                new GridProductRankingViewAdapter(recyclerViewGrid,
-                        productRankings,
-                        integerProductHashMap,
-                        MainActivity.this);
-        recyclerViewGrid.setAdapter(gridProductRankingViewAdapter);
-        recyclerViewGrid.setHasFixedSize(true);
-        recyclerViewGrid.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerViewGrid.getRecycledViewPool().clear();
-        gridProductRankingViewAdapter.notifyDataSetChanged();
-    }
+//    private void inflateProductRankingAdapter(List<ProductRanking> productRankings, HashMap<Integer, Product> integerProductHashMap) {
+//        gridProductRankingViewAdapter =
+//                new GridProductRankingViewAdapter(recyclerViewGrid,
+//                        productRankings,
+//                        integerProductHashMap,
+//                        MainActivity.this);
+//        recyclerViewGrid.setAdapter(gridProductRankingViewAdapter);
+//        recyclerViewGrid.setHasFixedSize(true);
+//        recyclerViewGrid.setLayoutManager(new GridLayoutManager(this, 2));
+//        recyclerViewGrid.getRecycledViewPool().clear();
+//        gridProductRankingViewAdapter.notifyDataSetChanged();
+//    }
 
 
-    @Override
-    public void onItemResponseError(String message) {
-        swipeRefreshLayout.setRefreshing(false);
-        lottieAnimationView.setVisibility(View.GONE);
-        Timber.d(">>>>>>>>>error  " + message);
-    }
+//    @Override
+//    public void onItemResponseSuccess(MainItems mainItems) {
+//        swipeRefreshLayout.setRefreshing(false);
+//        lottieAnimationView.setVisibility(View.GONE);
+//        Timber.d(">>>>>>>>>success " + mainItems.toString());
+//        categories.clear();
+//        rankings.clear();
+//        categories.addAll(mainItems.getCategories());
+//        rankings.addAll(mainItems.getRankings());
+//
+//        inflateRecyclerViewAdapter(recyclerView1, mainItems.getCategories());
+//        inflateRankingSpinner(rankings);
+//        integerProductHashMap = getAllProductHashMapFromCategories(products,categories);
+//
+//    }
+//
+//    @Override
+//    public void onItemResponseError(String message) {
+//        swipeRefreshLayout.setRefreshing(false);
+//        lottieAnimationView.setVisibility(View.GONE);
+//        Timber.d(">>>>>>>>>error  " + message);
+//    }
+
+
+
+
+
+
+
+
 
 
 
@@ -371,5 +385,27 @@ public class MainActivity extends AppCompatActivity implements ItemInterface {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent messageEvent) {
 
+    }
+
+    @Override
+    public void onCategoryResponseSuccess(CategoriesResponseModel mainItems) {
+        swipeRefreshLayout.setRefreshing(false);
+        lottieAnimationView.setVisibility(View.GONE);
+        Timber.d(">>>>>>>>>success " + mainItems.toString());
+        categories.clear();
+//        rankings.clear();
+        categories.addAll(mainItems.getResult());
+//        rankings.addAll(mainItems.getRankings());
+
+        inflateRecyclerViewAdapter(recyclerView1, mainItems.getResult());
+//        inflateRankingSpinner(rankings);
+//        integerProductHashMap = getAllProductHashMapFromCategories(products,categories);
+    }
+
+    @Override
+    public void onCategoryResponseError(String message) {
+        swipeRefreshLayout.setRefreshing(false);
+        lottieAnimationView.setVisibility(View.GONE);
+        Timber.d(">>>>>>>>>error  " + message);
     }
 }
