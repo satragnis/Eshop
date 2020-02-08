@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +8,7 @@
     tools:context=".Activity.ProductDetailActivity">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_add_to_cart"
@@ -33,12 +35,29 @@
 
             <com.daimajia.slider.library.SliderLayout
                 android:id="@+id/slider"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:auto_cycle="true"
+                app:barrierAllowsGoneWidgets="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:pager_animation="Fade" />
+
+            <ImageView
+                android:id="@+id/imageV"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="8dp"
-                app:auto_cycle="true"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -51,12 +70,13 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:padding="8dp"
-                android:text="Fossil"
+                android:text="@string/product_name_label"
                 android:textColor="@color/md_grey_850"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_category_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/slider" />
+                app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
             <TextView
                 android:id="@+id/tv_category_name"
@@ -65,7 +85,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:padding="8dp"
-                android:text="CH2601 DECKER Analog Watch - For Men#JustHere dgdgdgdgdgdgdgdgdgdgdgdgd"
+                android:text="@string/product_description_label"
                 android:textColor="@color/md_grey_600"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -79,7 +99,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:padding="8dp"
-                android:text="$ 4,000 "
+                android:text="@string/price_label"
                 android:textColor="@color/md_black_1000"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -93,7 +113,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:padding="8dp"
-                android:text="45% off "
+                android:text="@string/discount_off_label"
                 android:textColor="@color/colorGreen"
                 android:textSize="20sp"
                 android:textStyle="normal"
@@ -108,10 +128,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:rating="2.5"
+                android:rating="0"
                 android:stepSize="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_price" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.75" />
 
             <!--<TextView
                 android:id="@+id/tv_rating"
@@ -141,4 +168,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:visibility="gone"
+        android:id="@+id/loaderLAV"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.466"
+        app:lottie_autoPlay="true"
+        app:lottie_enableMergePathsForKitKatAndAbove="true"
+        app:lottie_fileName="loading.json"
+        app:lottie_loop="true" />
 </android.support.constraint.ConstraintLayout>

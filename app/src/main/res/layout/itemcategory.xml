@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
-    android:layout_height="260dp"
+    android:layout_height="300dp"
     android:layout_margin="8dp"
     app:cardBackgroundColor="@color/colorWhite"
     app:cardCornerRadius="8dp"
@@ -19,8 +19,9 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toTopOf="@+id/scrollh"
+            app:layout_constraintBottom_toTopOf="@+id/productPrice"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,28 +36,28 @@
             android:gravity="center"
             android:padding="2dp"
             android:text="@string/product_name_label"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:textColor="@color/md_black_1000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <HorizontalScrollView
-            android:id="@+id/scrollh"
+
+        <TextView
+            android:id="@+id/productPrice"
             android:layout_width="match_parent"
             android:layout_height="46dp"
+            android:textSize="16sp"
+            android:text="-------"
+            android:gravity="center"
             app:layout_constraintBottom_toTopOf="@+id/addToCart"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <android.support.design.chip.ChipGroup
-                android:id="@+id/chip_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical" />
-        </HorizontalScrollView>
+            app:layout_constraintStart_toStartOf="parent"/>
 
 
         <Button
+            android:visibility="gone"
             android:id="@+id/addToCart"
             style="@style/submit_button_style"
             android:layout_width="match_parent"

@@ -1,13 +1,19 @@
 package com.example.eshop.Activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatRatingBar;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
@@ -21,11 +27,14 @@ import com.example.eshop.R;
 import com.example.eshop.Utils.Constants;
 import com.example.eshop.Utils.Utils;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ProductDetailActivity extends AppCompatActivity implements
@@ -39,23 +48,44 @@ public class ProductDetailActivity extends AppCompatActivity implements
     protected TextView mTvCategoryName;
     @BindView(R.id.tv_price)
     protected TextView mTvPrice;
+    @BindView(R.id.textView)
+    protected TextView mTvTitle;
     @BindView(R.id.tv_discount_price)
     protected TextView mTvDiscountPrice;
     @BindView(R.id.rating)
     protected AppCompatRatingBar mRating;
     @BindView(R.id.btn_add_to_cart)
     protected Button mBtnAddToCart;
+    @BindView(R.id.scrollView)
+    protected ScrollView scrollView;
+    @BindView(R.id.loaderLAV)
+    LottieAnimationView lottieAnimationView;
+    @BindView(R.id.imageV)
+    ImageView productImageView;
+
+
 
     private ProductDetailPresenter mProductDetailPresenter;
+    private String productId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
-
+        ButterKnife.bind(this);
+        extractIntent();
         initialize();
+        callApiProductDetail();
+    }
 
-        //callApiProductDetail();
+
+    private void extractIntent() {
+        if (getIntent() != null) {
+            Intent intent = getIntent();
+            if (intent.hasExtra(Constants.PRODUCT_ID_KEY)) {
+                productId = intent.getStringExtra(Constants.PRODUCT_ID_KEY);
+            }
+        }
     }
 
     private void initialize() {
@@ -63,39 +93,56 @@ public class ProductDetailActivity extends AppCompatActivity implements
     }
 
     private void callApiProductDetail() {
-        Map<String, String> headerMap = new HashMap<>();
-        headerMap.put("", "");
-
+        Map<String, String> header = Utils.getHeader(this);
+        Map<String, String> request = getRequestObject(productId);
         if (Utils.isNetworkAvailable(this)) {
-            mProductDetailPresenter.getProductDetail(headerMap, 8);
+            mProductDetailPresenter.getProductDetail(header, request);
         } else {
             Utils.showToasty(this, getResources().getString(R.string.no_internet_message), Constants.WARNING);
         }
     }
 
     private void inflateBannerList(final Result result) {
-        for (int i = 0; i < result.getOtherImages().size(); i++) {
-            final OtherImage banner = result.getOtherImages().get(i);
-            DefaultSliderView defaultSliderView = new DefaultSliderView(this);
-            defaultSliderView.error(R.drawable.banner_place_holder)
-                    .empty(R.drawable.banner_place_holder)
-                    .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-                        @Override
-                        public void onSliderClick(BaseSliderView slider) {
-                            //bannerClickListener(banner);
-                        }
-                    }).image(Urls.GET_BASE_IMAGE_URL +
-                    (banner.getProductImage() != null ? banner.getProductImage() : ""))
-                    .setScaleType(BaseSliderView.ScaleType.Fit);
-            sliderLayout.addSlider(defaultSliderView);
-            //sliderLayout.startAutoCycle();
+        if(result.getOtherImages().size()>0) {
+            sliderLayout.setVisibility(View.VISIBLE);
+            productImageView.setVisibility(View.GONE);
+            for (int i = 0; i < result.getOtherImages().size(); i++) {
+                final OtherImage banner = result.getOtherImages().get(i);
+                DefaultSliderView defaultSliderView = new DefaultSliderView(this);
+                defaultSliderView.error(R.drawable.productplaceholder)
+                        .empty(R.drawable.productplaceholder)
+                        .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                            @Override
+                            public void onSliderClick(BaseSliderView slider) {
+                                //bannerClickListener(banner);
+                            }
+                        }).image(Urls.GET_BASE_IMAGE_URL +
+                        (banner.getProductImage() != null ? banner.getProductImage() : ""))
+                        .setScaleType(BaseSliderView.ScaleType.CenterCrop);
+                sliderLayout.addSlider(defaultSliderView);
+                //sliderLayout.startAutoCycle();
+            }
+        }else{
+            sliderLayout.setVisibility(View.GONE);
+            productImageView.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .load(result.getImageUrl())
+                    .apply(Utils.getRequestOptionsForGlide())
+                    .into(productImageView);
+
         }
     }
 
     @Override
     public void onProductResponseSuccess(ProductDetail productDetail) {
+        lottieAnimationView.setVisibility(View.GONE);
         if (productDetail != null) {
+            scrollView.setVisibility(View.VISIBLE);
+            mBtnAddToCart.setEnabled(true);
             setDataToView(productDetail.getResult());
+        } else {
+            scrollView.setVisibility(View.VISIBLE);
+            mBtnAddToCart.setEnabled(false);
         }
     }
 
@@ -106,15 +153,28 @@ public class ProductDetailActivity extends AppCompatActivity implements
         mTvPrice.setText(result.get(0).getProductPrice() != null ? result.get(0).getProductPrice() : "");
         mTvDiscountPrice.setText(result.get(0).getDiscount() != null ? result.get(0).getDiscount() : "");
         mRating.setRating(result.get(0).getRating() != null ? Float.parseFloat(result.get(0).getRating()) : (float) 0.0);
+        mTvTitle.setText(result.get(0).getCategoryName() != null ? result.get(0).getCategoryName() : "");
     }
 
     @Override
     public void onProductResponseError(String message) {
-
+        lottieAnimationView.setVisibility(View.GONE);
+        Utils.showToasty(this, message, Constants.ERROR);
     }
 
     @OnClick(R.id.btn_add_to_cart)
     void clickAddToCart() {
         Toast.makeText(this, "Click", Toast.LENGTH_SHORT).show();
+    }
+
+
+    public Map<String, String> getRequestObject(String id) {
+        Map<String, String> request = new HashMap<>();
+        try {
+            request.put(Constants.PRODUCT_ID_KEY, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return request;
     }
 }
