@@ -1,5 +1,6 @@
 package com.example.eshop.Network;
 
+import com.example.eshop.Model.CartDetail.Result;
 import com.example.eshop.Model.CategoryModel.CategoriesResponseModel;
 import com.example.eshop.Model.MainItems;
 import com.example.eshop.Model.ProductDetail.ProductDetail;
@@ -46,4 +47,7 @@ public interface Service {
     @GET(Urls.GET_PRODUCT_DETAIL)
     Observable<ProductDetail> getProductDetail(Map<String, String> headerMap,
                                                @Path("product_id") int prodID);
+
+    @GET(Urls.GET_CART_LIST)
+    Observable<Result> getCartList(Map<String, String> headerMap);
 }

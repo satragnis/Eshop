@@ -1,5 +1,6 @@
 package com.example.eshop.Network;
 
+import com.example.eshop.Model.CartDetail.Result;
 import com.example.eshop.Model.CategoryModel.CategoriesResponseModel;
 import com.example.eshop.Model.MainItems;
 import com.example.eshop.Model.ProductDashboardModel.ProductsDashboardResponseModel;
@@ -42,6 +43,10 @@ public class ApiManager {
 
     public Observable<ProductDetail> getProductDetail(Map<String, String> headerMap,int productID){
         return service.getProductDetail(headerMap,productID);
+    }
+
+    public Observable<Result> getCartList(Map<String, String> headerMap){
+        return service.getCartList(headerMap);
     }
 
     private Retrofit provideRetrofit(){
