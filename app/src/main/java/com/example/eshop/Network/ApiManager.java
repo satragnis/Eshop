@@ -6,6 +6,7 @@ import com.example.eshop.Model.ProductDashboardModel.ProductsDashboardResponseMo
 import com.example.eshop.Model.ProductDetailResponseModel.ProductDetailResponseModel;
 
 import org.json.JSONObject;
+import com.example.eshop.Model.ProductDetail.ProductDetail;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +40,9 @@ public class ApiManager {
 
 
 
+    public Observable<ProductDetail> getProductDetail(Map<String, String> headerMap,int productID){
+        return service.getProductDetail(headerMap,productID);
+    }
 
     private Retrofit provideRetrofit(){
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
