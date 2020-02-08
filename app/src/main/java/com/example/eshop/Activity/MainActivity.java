@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
 
     List<Result> categories = new ArrayList<>();
     private Drawer drawer;
-    private String endLimit ="50";
+    private String endLimit = "50";
 
 
     @Override
@@ -108,7 +108,13 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
     @Override
     protected void onResume() {
         super.onResume();
-        makeAPICalls();
+        if (Utils.isNetworkAvailable(this)) {
+            makeAPICalls();
+        }else {
+            swipeRefreshLayout.setRefreshing(false);
+            lottieAnimationView.setVisibility(View.GONE);
+            Utils.showToasty(this, getResources().getString(R.string.no_internet_message), Constants.WARNING);
+        }
     }
 
 
@@ -144,10 +150,12 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
             case R.id.menu_cart_action: {//index returned when home button pressed
                 startActivity(new Intent(MainActivity.this, CartActivity.class));
                 return true;
-            }case R.id.menu_info_action: {  //index returned when home button pressed
+            }
+            case R.id.menu_info_action: {  //index returned when home button pressed
                 startActivity(new Intent(MainActivity.this, NotificationActivity.class));
                 return true;
-            }case android.R.id.home: {  //index returned when home button pressed
+            }
+            case android.R.id.home: {  //index returned when home button pressed
                 drawer.openDrawer();
                 return true;
             }
@@ -169,8 +177,8 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
         if (Utils.isNetworkAvailable(this)) {
             inflateDummyBanner();
             getItemsData();
-        }else{
-            Utils.showToasty(this,getResources().getString(R.string.no_internet_message),Constants.WARNING);
+        } else {
+            Utils.showToasty(this, getResources().getString(R.string.no_internet_message), Constants.WARNING);
         }
     }
 
@@ -197,32 +205,33 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
-                        boolean result= false;
-                        switch (position){
-                            case 0: startActivity(new Intent(MainActivity.this, MainActivity.class));
-                            finish();
-                            result =true;
-                            break;
+                        boolean result = false;
+                        switch (position) {
+                            case 0:
+                                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                                finish();
+                                result = true;
+                                break;
 
                             case 1:
-                                Utils.showToasty(MainActivity.this,getResources().getString(R.string.work_in_progress), Constants.INFO);
-                            result =true;
-                            break;
+                                Utils.showToasty(MainActivity.this, getResources().getString(R.string.work_in_progress), Constants.INFO);
+                                result = true;
+                                break;
 
                             case 2:
-                                Utils.showToasty(MainActivity.this,getResources().getString(R.string.work_in_progress), Constants.INFO);
-                            result =true;
-                            break;
+                                Utils.showToasty(MainActivity.this, getResources().getString(R.string.work_in_progress), Constants.INFO);
+                                result = true;
+                                break;
 
                             case 3:
-                                Utils.showToasty(MainActivity.this,getResources().getString(R.string.work_in_progress), Constants.INFO);
-                                result =true;
-                            break;
+                                Utils.showToasty(MainActivity.this, getResources().getString(R.string.work_in_progress), Constants.INFO);
+                                result = true;
+                                break;
 
                             case 4:
                                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                                result =true;
-                            break;
+                                result = true;
+                                break;
                         }
                         return result;
                     }
@@ -231,16 +240,15 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
     }
 
     private void getItemsData() {
-        Map<String,String> header = Utils.getHeader(this);
-        Map<String,String> body = new HashMap<>();
-        body.put(Constants.END_LIMIT_ID_KEY,endLimit);
+        Map<String, String> header = Utils.getHeader(this);
+        Map<String, String> body = new HashMap<>();
+        body.put(Constants.END_LIMIT_ID_KEY, endLimit);
 
         AllProductDashboardPresenter allProductDashboardPresenter = new AllProductDashboardPresenter(this);
-        allProductDashboardPresenter.getAllProduct(header,body);
+        allProductDashboardPresenter.getAllProduct(header, body);
 
-        AllCategoryPresenter allCategoryPresenter =  new AllCategoryPresenter(this);
+        AllCategoryPresenter allCategoryPresenter = new AllCategoryPresenter(this);
         allCategoryPresenter.getAllCategories(header);
-
 
 
     }
@@ -254,7 +262,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
                 .setScaleType(BaseSliderView.ScaleType.Fit);
         sliderLayout.addSlider(textSliderView);
     }
-
 
 
 //    private void inflateRankingSpinner(List<Ranking> rankings1) {
@@ -285,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
         public void onClick(View view) {
             //TODO: Step 4 of 4: Finally call getTag() on the view.
             // This viewHolder will have all required values.
-            Animation animation = AnimationUtils.loadAnimation(MainActivity.this,R.anim.zoom_in);
+            Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom_in);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -327,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
                         MainActivity.this);
         recyclerViewGrid.setAdapter(gridProductRankingViewAdapter);
         recyclerViewGrid.setHasFixedSize(true);
-        recyclerViewGrid.setLayoutManager(new GridLayoutManager(this, Utils.calculateNoOfColumns(this,180)));
+        recyclerViewGrid.setLayoutManager(new GridLayoutManager(this, Utils.calculateNoOfColumns(this, 180)));
         recyclerViewGrid.getRecycledViewPool().clear();
         gridProductRankingViewAdapter.notifyDataSetChanged();
     }
@@ -394,7 +401,7 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
     public void onCategoryResponseError(String message) {
         swipeRefreshLayout.setRefreshing(false);
         lottieAnimationView.setVisibility(View.GONE);
-        Utils.showToasty(this,message,Constants.ERROR);
+        Utils.showToasty(this, message, Constants.ERROR);
     }
 
     @Override
@@ -408,6 +415,6 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
     public void onProductResponseError(String message) {
         swipeRefreshLayout.setRefreshing(false);
         lottieAnimationView.setVisibility(View.GONE);
-        Utils.showToasty(this,message,Constants.ERROR);
+        Utils.showToasty(this, message, Constants.ERROR);
     }
 }
