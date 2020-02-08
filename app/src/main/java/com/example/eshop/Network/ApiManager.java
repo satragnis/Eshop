@@ -1,6 +1,7 @@
 package com.example.eshop.Network;
 
 import com.example.eshop.Model.MainItems;
+import com.example.eshop.Model.ProductDetail.ProductDetail;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +25,9 @@ public class ApiManager {
         return service.getProductList(headerMap);
     }
 
-
+    public Observable<ProductDetail> getProductDetail(Map<String, String> headerMap,int productID){
+        return service.getProductDetail(headerMap,productID);
+    }
 
     private Retrofit provideRetrofit(){
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();

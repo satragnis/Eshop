@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.eshop.Activity.LoginActivity;
+import com.example.eshop.Activity.ProductDetailActivity;
 import com.example.eshop.Model.Category;
 import com.example.eshop.Model.Product;
 import com.example.eshop.Model.Variant;
@@ -61,6 +62,13 @@ public class GridProductViewAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View v) {
                 context.startActivity(new Intent(context, LoginActivity.class));
+            }
+        });
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    context.startActivity(new Intent(context, ProductDetailActivity.class));
             }
         });
 
