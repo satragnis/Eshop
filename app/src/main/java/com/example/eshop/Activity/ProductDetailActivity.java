@@ -150,7 +150,8 @@ public class ProductDetailActivity extends AppCompatActivity implements
         inflateBannerList(result.get(0));
         mTvProductName.setText(result.get(0).getProductName() != null ? result.get(0).getProductName() : "");
         mTvCategoryName.setText(result.get(0).getCategoryName() != null ? result.get(0).getCategoryName() : "");
-        mTvPrice.setText(result.get(0).getProductPrice() != null ? result.get(0).getProductPrice() : "");
+        String price =result.get(0).getProductPrice() != null ? result.get(0).getProductPrice() : "";
+        mTvPrice.setText(getResources().getString(R.string.rupees_symbol_label)+""+price);
         mTvDiscountPrice.setText(result.get(0).getDiscount() != null ? result.get(0).getDiscount() : "");
         mRating.setRating(result.get(0).getRating() != null ? Float.parseFloat(result.get(0).getRating()) : (float) 0.0);
         mTvTitle.setText(result.get(0).getCategoryName() != null ? result.get(0).getCategoryName() : "");
