@@ -117,6 +117,7 @@ public class ProductListActivity extends AppCompatActivity {
 //            products = messageEvent.getProducts();
             categoryPos = messageEvent.getIntegerValue();
             categoryName.setText(category.getCatName());
+
 //            inflateRecyclerProductAdapter(products,categories,categoryPos);
         }
     }
