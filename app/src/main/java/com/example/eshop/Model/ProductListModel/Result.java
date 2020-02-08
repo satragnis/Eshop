@@ -2,6 +2,8 @@
 package com.example.eshop.Model.ProductListModel;
 
 import java.io.Serializable;
+import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -46,7 +48,7 @@ public class Result implements Serializable
     private String baseUrl;
     @SerializedName("otherImages")
     @Expose
-    private String otherImages;
+    private List<OtherImage> otherImages = null;
     private final static long serialVersionUID = -2057150502831783323L;
 
     public String getId() {
@@ -145,11 +147,11 @@ public class Result implements Serializable
         this.baseUrl = baseUrl;
     }
 
-    public String getOtherImages() {
+    public List<OtherImage> getOtherImages() {
         return otherImages;
     }
 
-    public void setOtherImages(String otherImages) {
+    public void setOtherImages(List<OtherImage> otherImages) {
         this.otherImages = otherImages;
     }
 

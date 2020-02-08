@@ -8,6 +8,9 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.widget.Toast;
 
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.eshop.BuildConfig;
 import com.example.eshop.R;
 
@@ -99,4 +102,24 @@ public class Utils {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
+    public static RequestOptions getRequestOptionsForGlide() {
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.productplaceholder)
+                .error(R.drawable.productplaceholder)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH);
+        return options;
+    }
+
+    public static Map<String, String> getHeader(Context context) {
+        Map<String, String> header = new HashMap<>();
+        if (context!=null)
+        header.put(Constants.Authorization, Constants.AuthorizationValue);
+        return header;
+    }
+
+
+
 }

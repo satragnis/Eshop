@@ -1,9 +1,10 @@
 package com.example.eshop.Network.Presenter;
 
 import com.example.eshop.Model.ProductDetail.ProductDetail;
+import com.example.eshop.Model.ProductListModel.ProductListResponseModel;
 import com.example.eshop.Network.ApiManager;
 import com.example.eshop.Network.Interfaces.ProductDetailInterface;
-import com.google.gson.JsonObject;
+import com.example.eshop.Network.Interfaces.ProductListInterface;
 
 import org.json.JSONObject;
 
@@ -13,20 +14,20 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class ProductDetailPresenter {
+public class ProductListPresenter {
     private ApiManager mApiManager;
-    private ProductDetailInterface mProductDetailInterface;
+    private ProductListInterface listInterface;
 
-    public ProductDetailPresenter(ProductDetailInterface productDetailInterface) {
+    public ProductListPresenter(ProductListInterface listInterface) {
         mApiManager = new ApiManager();
-        this.mProductDetailInterface = productDetailInterface;
+        this.listInterface = listInterface;
     }
 
-    public void getProductDetail(Map<String, String> headerMap, Map<String,String> body) {
-        mApiManager.getProductDetail(headerMap, body)
+    public void getProductListByCatId(Map<String, String> headerMap, JSONObject jsonObject) {
+        mApiManager.getProductListByCatId(headerMap, jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ProductDetail>() {
+                .subscribe(new Observer<ProductListResponseModel>() {
                     @Override
                     public void onCompleted() {
 
@@ -34,12 +35,12 @@ public class ProductDetailPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mProductDetailInterface.onProductResponseError(e.getMessage());
+                        listInterface.onProductListResponseError(e.getMessage());
                     }
 
                     @Override
-                    public void onNext(ProductDetail productDetail) {
-                        mProductDetailInterface.onProductResponseSuccess(productDetail);
+                    public void onNext(ProductListResponseModel productDetail) {
+                        listInterface.onProductListResponseSuccess(productDetail);
                     }
                 });
     }

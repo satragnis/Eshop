@@ -12,6 +12,8 @@ import org.json.JSONObject;
 import java.util.Map;
 
 import retrofit2.http.Body;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
@@ -23,9 +25,11 @@ import rx.Observable;
 public interface Service {
 
     @Headers({
-            "Content-Type: application/json;chartset=utf-8",
+//            "Content-Type: application/json;chartset=utf-8",
+            "Content-Type: application/x-www-form-urlencoded;chartset=utf-8",
             "Accept: application/json"
     })
+
 
     @GET(Urls.GETPRODUCTLIST)
     Observable<MainItems> getProductList(@HeaderMap Map<String,String> headers);
@@ -43,7 +47,9 @@ public interface Service {
     @POST(Urls.GETPRODUCTLISTBYCATID)
     Observable<ProductListResponseModel> getProductListByCatId(@HeaderMap Map<String,String> headers,@Body JSONObject jsonObject);
 
-    @GET(Urls.GET_PRODUCT_DETAIL)
-    Observable<ProductDetail> getProductDetail(Map<String, String> headerMap,
-                                               @Path("product_id") int prodID);
+
+
+    @POST(Urls.GET_PRODUCT_DETAIL)
+    @FormUrlEncoded
+    Observable<ProductDetail> getProductDetail(@HeaderMap  Map<String, String> headerMap, @FieldMap Map<String,String> headers);
 }

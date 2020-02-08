@@ -76,14 +76,15 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:padding="8dp"
-                android:text="@string/shop_by_ranking"
+                android:text="@string/shop_by_most_recent_purchases_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <com.jaredrummler.materialspinner.MaterialSpinner
+                android:visibility="gone"
                 android:id="@+id/spinner_ranking"
                 android:layout_centerVertical="true"
                 android:background="@color/md_blue_grey_50"
-                android:text="Sort by"
+                android:text="@string/sort_by_label"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

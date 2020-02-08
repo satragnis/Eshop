@@ -7,6 +7,7 @@ import com.example.eshop.Model.ProductDetailResponseModel.ProductDetailResponseM
 
 import org.json.JSONObject;
 import com.example.eshop.Model.ProductDetail.ProductDetail;
+import com.example.eshop.Model.ProductListModel.ProductListResponseModel;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -34,14 +35,16 @@ public class ApiManager {
         return service.getAllProductList(headerMap,jsonObject);
     }
 
+    public Observable<ProductListResponseModel> getProductListByCatId(Map<String, String> headerMap, JSONObject jsonObject){
+        return service.getProductListByCatId(headerMap,jsonObject);
+    }
+
     public Observable<CategoriesResponseModel> getAllCategories(Map<String, String> headerMap){
         return service.getCategotyList(headerMap);
     }
 
-
-
-    public Observable<ProductDetail> getProductDetail(Map<String, String> headerMap,int productID){
-        return service.getProductDetail(headerMap,productID);
+    public Observable<ProductDetail> getProductDetail(Map<String, String> headerMap,Map<String,String> body){
+        return service.getProductDetail(headerMap,body);
     }
 
     private Retrofit provideRetrofit(){
