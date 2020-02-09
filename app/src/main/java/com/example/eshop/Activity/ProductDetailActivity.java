@@ -7,7 +7,6 @@ import android.support.v7.widget.AppCompatRatingBar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,17 +16,19 @@ import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.example.eshop.Model.AddToCartModel.AddToCartResponse;
+import com.example.eshop.Model.CartDetail.CartDetailResponse;
 import com.example.eshop.Model.ProductDetail.OtherImage;
 import com.example.eshop.Model.ProductDetail.ProductDetail;
 import com.example.eshop.Model.ProductDetail.Result;
+import com.example.eshop.Network.Interfaces.AddToCartInterface;
 import com.example.eshop.Network.Interfaces.ProductDetailInterface;
+import com.example.eshop.Network.Presenter.AddToCartPresenter;
 import com.example.eshop.Network.Presenter.ProductDetailPresenter;
 import com.example.eshop.Network.Urls;
 import com.example.eshop.R;
 import com.example.eshop.Utils.Constants;
 import com.example.eshop.Utils.Utils;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +38,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.example.eshop.Utils.Constants.USER_ID_KEY;
+
 public class ProductDetailActivity extends AppCompatActivity implements
-        ProductDetailInterface {
+        ProductDetailInterface,
+        AddToCartInterface {
 
     @BindView(R.id.slider)
     protected SliderLayout sliderLayout;
@@ -63,7 +67,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
     @BindView(R.id.imageV)
     ImageView productImageView;
 
-
+    private AddToCartPresenter mAddToCartPresenter;
 
     private ProductDetailPresenter mProductDetailPresenter;
     private String productId;
@@ -90,11 +94,12 @@ public class ProductDetailActivity extends AppCompatActivity implements
 
     private void initialize() {
         mProductDetailPresenter = new ProductDetailPresenter(this);
+        mAddToCartPresenter = new AddToCartPresenter(this);
     }
 
     private void callApiProductDetail() {
         Map<String, String> header = Utils.getHeader(this);
-        Map<String, String> request = getRequestObject(productId);
+        Map<String, String> request = getRequestObject(productId, "PRODUCT");
         if (Utils.isNetworkAvailable(this)) {
             mProductDetailPresenter.getProductDetail(header, request);
         } else {
@@ -103,7 +108,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
     }
 
     private void inflateBannerList(final Result result) {
-        if(result.getOtherImages().size()>0) {
+        if (result.getOtherImages().size() > 0) {
             sliderLayout.setVisibility(View.VISIBLE);
             productImageView.setVisibility(View.GONE);
             for (int i = 0; i < result.getOtherImages().size(); i++) {
@@ -122,7 +127,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
                 sliderLayout.addSlider(defaultSliderView);
                 //sliderLayout.startAutoCycle();
             }
-        }else{
+        } else {
             sliderLayout.setVisibility(View.GONE);
             productImageView.setVisibility(View.VISIBLE);
             Glide.with(this)
@@ -164,17 +169,41 @@ public class ProductDetailActivity extends AppCompatActivity implements
 
     @OnClick(R.id.btn_add_to_cart)
     void clickAddToCart() {
-        Toast.makeText(this, "Click", Toast.LENGTH_SHORT).show();
+        Map<String, String> header = Utils.getHeader(this);
+        Map<String, String> request = getRequestObject(productId, "CART");
+        if (Utils.isNetworkAvailable(this)) {
+            mAddToCartPresenter.addCartApi(header, request);
+        } else {
+            Utils.showToasty(this, getResources().getString(R.string.no_internet_message), Constants.WARNING);
+        }
     }
 
 
-    public Map<String, String> getRequestObject(String id) {
+    public Map<String, String> getRequestObject(String id, String type) {
         Map<String, String> request = new HashMap<>();
         try {
             request.put(Constants.PRODUCT_ID_KEY, id);
+            if (type.equalsIgnoreCase("CART")) {
+                request.put(Constants.USER_ID_KEY, "2");
+                request.put(Constants.TOTAL_ITEM_QUANTITY, "5");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return request;
+    }
+
+    @Override
+    public void onAddCartResponseSuccess(AddToCartResponse result) {
+        lottieAnimationView.setVisibility(View.GONE);
+        if (result != null) {
+            Utils.showToasty(ProductDetailActivity.this, result.getMessage(), Constants.SUCCESS);
+        }
+    }
+
+    @Override
+    public void onAddCartResponseError(String message) {
+        lottieAnimationView.setVisibility(View.GONE);
+        Utils.showToasty(this, message, Constants.ERROR);
     }
 }

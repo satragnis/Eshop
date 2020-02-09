@@ -1,10 +1,8 @@
 package com.example.eshop.Network.Presenter;
 
-import com.example.eshop.Model.CartDetail.Result;
-import com.example.eshop.Model.ProductDetail.ProductDetail;
+import com.example.eshop.Model.AddToCartModel.AddToCartResponse;
 import com.example.eshop.Network.ApiManager;
 import com.example.eshop.Network.Interfaces.AddToCartInterface;
-import com.example.eshop.Network.Interfaces.ProductDetailInterface;
 
 import java.util.Map;
 
@@ -21,11 +19,11 @@ public class AddToCartPresenter {
         this.mAddToCartInterface = addToCartInterface;
     }
 
-    public void fetchCartListData(Map<String, String> headerMap) {
-        mApiManager.getCartList(headerMap)
+    public void addCartApi(Map<String, String> headerMap, Map<String, String> body) {
+        mApiManager.addToCart(headerMap, body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Result>() {
+                .subscribe(new Observer<AddToCartResponse>() {
                     @Override
                     public void onCompleted() {
 
@@ -33,12 +31,12 @@ public class AddToCartPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mAddToCartInterface.onCartResponseError(e.getMessage());
+                        mAddToCartInterface.onAddCartResponseError(e.getMessage());
                     }
 
                     @Override
-                    public void onNext(Result result) {
-                        mAddToCartInterface.onCartResponseSuccess(result);
+                    public void onNext(AddToCartResponse cartResponse) {
+                        mAddToCartInterface.onAddCartResponseSuccess(cartResponse);
                     }
                 });
     }

@@ -138,7 +138,8 @@ public class MainActivity extends AppCompatActivity implements CategoryListItemI
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_cart_action: {//index returned when home button pressed
-                startActivity(new Intent(MainActivity.this, CartActivity.class));
+                //startActivity(new Intent(MainActivity.this, CartActivity.class));
+                startActivity(new Intent(MainActivity.this, CartListActivity.class));
                 return true;
             }case R.id.menu_info_action: {  //index returned when home button pressed
                 startActivity(new Intent(MainActivity.this, NotificationActivity.class));

@@ -1,10 +1,9 @@
 package com.example.eshop.Network.Interfaces;
 
-import com.example.eshop.Model.CartDetail.Result;
-import com.example.eshop.Model.CategoryModel.CategoriesResponseModel;
+import com.example.eshop.Model.AddToCartModel.AddToCartResponse;
 
 public interface AddToCartInterface {
-    void onCartResponseSuccess(Result result);
+    void onAddCartResponseSuccess(AddToCartResponse result);
 
-    void onCartResponseError(String message);
+    void onAddCartResponseError(String message);
 }

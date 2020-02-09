@@ -1,5 +1,7 @@
 package com.example.eshop.Network;
 
+import com.example.eshop.Model.AddToCartModel.AddToCartResponse;
+import com.example.eshop.Model.CartDetail.CartDetailResponse;
 import com.example.eshop.Model.CartDetail.Result;
 import com.example.eshop.Model.CategoryModel.CategoriesResponseModel;
 import com.example.eshop.Model.MainItems;
@@ -9,6 +11,7 @@ import com.example.eshop.Model.ProductDetailResponseModel.ProductDetailResponseM
 import org.json.JSONObject;
 import com.example.eshop.Model.ProductDetail.ProductDetail;
 import com.example.eshop.Model.ProductListModel.ProductListResponseModel;
+import com.example.eshop.Model.RemoveCartModel.RemoveCartResponse;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -48,8 +51,16 @@ public class ApiManager {
         return service.getProductDetail(headerMap,body);
     }
 
-    public Observable<Result> getCartList(Map<String, String> headerMap){
-        return service.getCartList(headerMap);
+    public Observable<CartDetailResponse> getCartList(Map<String, String> headerMap, Map<String, String> body){
+        return service.getCartList(headerMap,body);
+    }
+
+    public Observable<AddToCartResponse> addToCart(Map<String, String> headerMap, Map<String, String> body){
+        return service.addToCart(headerMap,body);
+    }
+
+    public Observable<RemoveCartResponse> removeCart(Map<String, String> headerMap, Map<String, String> body){
+        return service.removeCart(headerMap,body);
     }
 
     private Retrofit provideRetrofit(){
