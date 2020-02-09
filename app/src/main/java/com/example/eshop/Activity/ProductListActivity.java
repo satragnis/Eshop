@@ -149,8 +149,6 @@ public class ProductListActivity extends AppCompatActivity implements ProductLis
         lottieAnimationView.setVisibility(View.GONE);
         Timber.d(">>>>>>>>>success " + mainItems.toString());
         inflateRecyclerProductAdapter(mainItems.getResult());
-
-
     }
 
     @Override

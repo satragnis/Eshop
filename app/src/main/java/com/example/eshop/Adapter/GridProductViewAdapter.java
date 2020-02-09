@@ -80,7 +80,7 @@ public class GridProductViewAdapter extends RecyclerView.Adapter {
             holder.addToCartBTN.setClickable(false);
             String price = product.getProductPrice()==null?"------":product.getProductPrice();
             String avail = product.getAvlQuantity()==null?"------":product.getAvlQuantity();
-            holder.productPrice.setText("Price: "+price+" | "+"Availability: "+avail);
+            holder.productPrice.setText("Price: "+context.getResources().getString(R.string.rupees_symbol_label)+price+" | "+"Stocks: "+avail +" left");
 
 
         Glide.with(context)
