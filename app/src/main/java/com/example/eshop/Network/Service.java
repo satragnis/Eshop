@@ -1,11 +1,15 @@
 package com.example.eshop.Network;
 
+import com.example.eshop.Model.AddToCartModel.AddToCartResponse;
+import com.example.eshop.Model.CartDetail.CartDetailResponse;
+import com.example.eshop.Model.CartDetail.Result;
 import com.example.eshop.Model.CategoryModel.CategoriesResponseModel;
 import com.example.eshop.Model.MainItems;
 import com.example.eshop.Model.ProductDetail.ProductDetail;
 import com.example.eshop.Model.ProductDashboardModel.ProductsDashboardResponseModel;
 import com.example.eshop.Model.ProductDetailResponseModel.ProductDetailResponseModel;
 import com.example.eshop.Model.ProductListModel.ProductListResponseModel;
+import com.example.eshop.Model.RemoveCartModel.RemoveCartResponse;
 
 import org.json.JSONObject;
 
@@ -53,4 +57,16 @@ public interface Service {
     @POST(Urls.GET_PRODUCT_DETAIL)
     @FormUrlEncoded
     Observable<ProductDetail> getProductDetail(@HeaderMap  Map<String, String> headerMap, @FieldMap Map<String,String> body);
+
+    @POST(Urls.GET_CART_LIST)
+    @FormUrlEncoded
+    Observable<CartDetailResponse> getCartList(@HeaderMap Map<String, String> headerMap, @FieldMap Map<String, String> body);
+
+    @POST(Urls.ADD_TO_CART)
+    @FormUrlEncoded
+    Observable<AddToCartResponse> addToCart(@HeaderMap Map<String, String> headerMap, @FieldMap Map<String, String> body);
+
+    @POST(Urls.REMOVE_CART)
+    @FormUrlEncoded
+    Observable<RemoveCartResponse> removeCart(@HeaderMap Map<String, String> headerMap, @FieldMap Map<String, String> body);
 }
