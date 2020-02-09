@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EShop</string>
+    <string name="app_name">Arinos</string>
     <string name="rupees_symbol_label">₹</string>
     <string name="drawer_item_home">Home</string>
     <string name="drawer_item_settings">Settings</string>
