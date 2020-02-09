@@ -1,9 +1,10 @@
 package com.example.eshop.Activity;
 
-import android.app.AlertDialog;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -112,9 +113,9 @@ public class CartListActivity extends AppCompatActivity implements
 
             int quantity = Integer.parseInt(cartDetails1.getQuantity());
             float price = Float.parseFloat(cartDetails1.getProduct().get(0).getProductPrice());
-
-            float subTotal = quantity * price;
-            total = total + subTotal;
+//            TODO: need to discuss
+//            float subTotal = quantity * price;
+            total = total + price;
         }
         mTvPrice.setText(getResources().getString(R.string.rupees_symbol_label) + total);
     }
