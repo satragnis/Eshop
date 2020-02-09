@@ -60,6 +60,8 @@ public class ProductDetailActivity extends AppCompatActivity implements
     protected AppCompatRatingBar mRating;
     @BindView(R.id.btn_add_to_cart)
     protected Button mBtnAddToCart;
+    @BindView(R.id.view_cart)
+    protected Button mBtnViewCart;
     @BindView(R.id.scrollView)
     protected ScrollView scrollView;
     @BindView(R.id.loaderLAV)
@@ -177,6 +179,12 @@ public class ProductDetailActivity extends AppCompatActivity implements
         } else {
             Utils.showToasty(this, getResources().getString(R.string.no_internet_message), Constants.WARNING);
         }
+    }
+    @OnClick(R.id.view_cart)
+    void goToCart() {
+        Intent intent = new Intent(ProductDetailActivity.this,CartListActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 
