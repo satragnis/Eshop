@@ -73,6 +73,8 @@ public class ProductDetailActivity extends AppCompatActivity implements
 
     private ProductDetailPresenter mProductDetailPresenter;
     private String productId;
+    private String mStrQuantity;
+    private String mStrUserId = "2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +103,11 @@ public class ProductDetailActivity extends AppCompatActivity implements
 
     private void callApiProductDetail() {
         Map<String, String> header = Utils.getHeader(this);
-        Map<String, String> request = getRequestObject(productId, "PRODUCT");
+        Map<String, String> request = getRequestObject(productId, Constants.PRODUCT);
         if (Utils.isNetworkAvailable(this)) {
             mProductDetailPresenter.getProductDetail(header, request);
         } else {
+            lottieAnimationView.setVisibility(View.GONE);
             Utils.showToasty(this, getResources().getString(R.string.no_internet_message), Constants.WARNING);
         }
     }
@@ -154,11 +157,14 @@ public class ProductDetailActivity extends AppCompatActivity implements
     }
 
     private void setDataToView(List<Result> result) {
+        mStrQuantity = result.get(0).getAvlQuantity()
+                != null ? result.get(0).getAvlQuantity() : "";
+
         inflateBannerList(result.get(0));
         mTvProductName.setText(result.get(0).getProductName() != null ? result.get(0).getProductName() : "");
         mTvCategoryName.setText(result.get(0).getCategoryName() != null ? result.get(0).getCategoryName() : "");
-        String price =result.get(0).getProductPrice() != null ? result.get(0).getProductPrice() : "";
-        mTvPrice.setText(getResources().getString(R.string.rupees_symbol_label)+""+price);
+        String price = result.get(0).getProductPrice() != null ? result.get(0).getProductPrice() : "";
+        mTvPrice.setText(getResources().getString(R.string.rupees_symbol_label) + "" + price);
         mTvDiscountPrice.setText(result.get(0).getDiscount() != null ? result.get(0).getDiscount() : "");
         mRating.setRating(result.get(0).getRating() != null ? Float.parseFloat(result.get(0).getRating()) : (float) 0.0);
         mTvTitle.setText(result.get(0).getCategoryName() != null ? result.get(0).getCategoryName() : "");
@@ -173,16 +179,17 @@ public class ProductDetailActivity extends AppCompatActivity implements
     @OnClick(R.id.btn_add_to_cart)
     void clickAddToCart() {
         Map<String, String> header = Utils.getHeader(this);
-        Map<String, String> request = getRequestObject(productId, "CART");
+        Map<String, String> request = getRequestObject(productId, Constants.CART);
         if (Utils.isNetworkAvailable(this)) {
             mAddToCartPresenter.addCartApi(header, request);
         } else {
             Utils.showToasty(this, getResources().getString(R.string.no_internet_message), Constants.WARNING);
         }
     }
+
     @OnClick(R.id.view_cart)
     void goToCart() {
-        Intent intent = new Intent(ProductDetailActivity.this,CartListActivity.class);
+        Intent intent = new Intent(ProductDetailActivity.this, CartListActivity.class);
         startActivity(intent);
         finish();
     }
@@ -192,9 +199,9 @@ public class ProductDetailActivity extends AppCompatActivity implements
         Map<String, String> request = new HashMap<>();
         try {
             request.put(Constants.PRODUCT_ID_KEY, id);
-            if (type.equalsIgnoreCase("CART")) {
-                request.put(Constants.USER_ID_KEY, "2");
-                request.put(Constants.TOTAL_ITEM_QUANTITY, "5");
+            if (type.equalsIgnoreCase(Constants.CART)) {
+                request.put(Constants.USER_ID_KEY, mStrUserId);
+                request.put(Constants.TOTAL_ITEM_QUANTITY, mStrQuantity);
             }
         } catch (Exception e) {
             e.printStackTrace();

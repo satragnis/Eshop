@@ -59,7 +59,12 @@ public class CartListAdapter extends RecyclerView.Adapter {
         holder.tvProductName.setText(product.get(0).getProductName());
         holder.tvProductDesc.setText(product.get(0).getProductDescription());
         holder.tvProductPrice.setText(product.get(0).getProductPrice());
-        holder.tvProductSubTotal.setText(product.get(0).getProductPrice());
+
+        float sum = 0f;
+        float price = Float.parseFloat(product.get(0).getProductPrice());
+        int quantity = Integer.parseInt(mListCart.get(position).getQuantity());
+        sum = price * quantity;
+        holder.tvProductSubTotal.setText(String.valueOf(sum));
 
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override

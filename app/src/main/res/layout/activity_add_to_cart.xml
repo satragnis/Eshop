@@ -16,7 +16,7 @@
         android:layout_marginEnd="8dp"
         android:background="@color/md_blue_grey_50"
         android:padding="8dp"
-        android:text="Cart List"
+        android:text="@string/cart_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -48,6 +48,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:padding="8dp"
+        android:gravity="center"
         android:text="$ 4,000"
         android:textColor="@color/md_black_1000"
         android:textSize="20sp"
@@ -57,14 +58,14 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btnPlaceOrder"
+        android:id="@+id/btnCheckout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:padding="8dp"
-        android:text="Place Order"
+        android:text="@string/check_out"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
         android:textStyle="normal"
@@ -98,5 +99,38 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5"/>
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationViewEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_enableMergePathsForKitKatAndAbove="true"
+        app:lottie_fileName="empty_cart.json"
+        app:lottie_loop="true" />
+
+    <TextView
+        android:id="@+id/tv_cart_empty"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="goBack"
+        android:layout_marginBottom="200dp"
+        android:visibility="gone"
+        android:gravity="center"
+        android:text="@string/cart_is_empty_go_back_and_start_shopping"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

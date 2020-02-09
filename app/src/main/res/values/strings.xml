@@ -26,4 +26,7 @@
     <string name="sort_by_label">Sort by</string>
     <string name="Delete_Title_label">Delete Cart</string>
     <string name="Cart_item_delete_msg">Do you really want to delete this item?</string>
+    <string name="cart_is_empty_go_back_and_start_shopping">Cart is empty.Go back and start shopping!</string>
+    <string name="cart_list">Cart List</string>
+    <string name="check_out">Check Out</string>
 </resources>

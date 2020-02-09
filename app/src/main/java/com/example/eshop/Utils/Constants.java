@@ -23,4 +23,5 @@ public class Constants {
     public static final String TOTAL_ITEM_QUANTITY = "total_quantity";
     public static final String DELETE = "DELETE";
     public static final String CART = "CART";
+    public static final String PRODUCT = "PRODUCT";
 }
