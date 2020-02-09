@@ -24,4 +24,6 @@
     <string name="discount_off_label">discount% off</string>
     <string name="shop_by_most_recent_purchases_label">Shop by Most Recent Purchases</string>
     <string name="sort_by_label">Sort by</string>
+    <string name="Delete_Title_label">Delete Cart</string>
+    <string name="Cart_item_delete_msg">Do you really want to delete this item?</string>
 </resources>

@@ -55,6 +55,7 @@ public class CartListActivity extends AppCompatActivity implements
     private CartDeletePresenter mCartDeletePresenter;
     private CartListAdapter mCartListAdapter;
     private List<Cartdetail> mCartDetails;
+    private String UserID = "2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class CartListActivity extends AppCompatActivity implements
 
     private void callApiCartList() {
         Map<String, String> headerMap = Utils.getHeader(this);
-        Map<String, String> request = getRequestObject("2", "", "CART");
+        Map<String, String> request = getRequestObject(UserID, "", Constants.CART);
 
         if (Utils.isNetworkAvailable(this)) {
             mAddToCartPresenter.fetchCartListData(headerMap, request);
@@ -98,11 +99,14 @@ public class CartListActivity extends AppCompatActivity implements
     @Override
     public void onCartResponseSuccess(CartDetailResponse result) {
         lottieAnimationView.setVisibility(View.GONE);
-        if (result != null) {
-            inflateRecyclerCartListAdapter(result.getResult().getCartdetails());
-        }else {
+        if (result == null) return;
+        List<Cartdetail> cartDetail = new ArrayList<>();
+        if (result.getResult().getCartdetails() != null) {
+            cartDetail = result.getResult().getCartdetails();
+        } else {
             Utils.showToasty(this, result.getMessage(), Constants.INFO);
         }
+        inflateRecyclerCartListAdapter(cartDetail);
     }
 
     @Override
@@ -118,13 +122,13 @@ public class CartListActivity extends AppCompatActivity implements
 
     private void confirmDialog(int position) {
         new AlertDialog.Builder(this)
-                .setTitle("Delete Cart")
-                .setMessage("Do you really want to delete this cart?")
+                .setTitle(getResources().getString(R.string.Delete_Title_label))
+                .setMessage(getResources().getString(R.string.Cart_item_delete_msg))
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Map<String, String> headerMap = Utils.getHeader(CartListActivity.this);
-                        Map<String, String> request = getRequestObject("2", mCartDetails.get(position).getProduct().get(0).getId(), "DELETE");
+                        Map<String, String> request = getRequestObject(UserID, mCartDetails.get(position).getProduct().get(0).getId(), Constants.DELETE);
                         mCartDeletePresenter.cartDelete(headerMap, request);
                     }
                 })
@@ -134,7 +138,7 @@ public class CartListActivity extends AppCompatActivity implements
     public Map<String, String> getRequestObject(String id, String pId, String type) {
         Map<String, String> request = new HashMap<>();
         try {
-            if (type.equalsIgnoreCase("DELETE")) {
+            if (type.equalsIgnoreCase(Constants.DELETE)) {
                 request.put(PRODUCT_ID_KEY, pId);
             }
             request.put(USER_ID_KEY, id);
@@ -147,12 +151,9 @@ public class CartListActivity extends AppCompatActivity implements
     @Override
     public void onCartRemoveResponseSuccess(RemoveCartResponse result) {
         lottieAnimationView.setVisibility(View.GONE);
-        if (result != null) {
-            Utils.showToasty(CartListActivity.this, result.getMessage(), Constants.SUCCESS);
-            callApiCartList();
-        }else {
-            Utils.showToasty(this, result.getMessage(), Constants.INFO);
-        }
+        if (result == null) return;
+        Utils.showToasty(CartListActivity.this, result.getMessage(), Constants.SUCCESS);
+        callApiCartList();
     }
 
     @Override
