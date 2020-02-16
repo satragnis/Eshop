@@ -36,27 +36,26 @@ public interface Service {
 
 
     @GET(Urls.GETPRODUCTLIST)
-    Observable<MainItems> getProductList(@HeaderMap Map<String,String> headers);
+    Observable<MainItems> getProductList(@HeaderMap Map<String, String> headers);
 
 
     @POST(Urls.GETALLPRODUCTLIST)
     @FormUrlEncoded
-    Observable<ProductsDashboardResponseModel> getAllProductList(@HeaderMap Map<String,String> headers,@FieldMap Map<String,String> body);
+    Observable<ProductsDashboardResponseModel> getAllProductList(@HeaderMap Map<String, String> headers, @FieldMap Map<String, String> body);
 
     @GET(Urls.GETALLCATEGORIES)
-    Observable<CategoriesResponseModel> getCategotyList(@HeaderMap Map<String,String> headers);
+    Observable<CategoriesResponseModel> getCategotyList(@HeaderMap Map<String, String> headers);
 
 //    @POST(Urls.GETPRODUCTDETAILSBYID)
 //    Observable<ProductDetailResponseModel> getProductById(@HeaderMap Map<String,String> headers, @Body JSONObject jsonObject);
 
     @POST(Urls.GETPRODUCTLISTBYCATID)
-    Observable<ProductListResponseModel> getProductListByCatId(@HeaderMap Map<String,String> headers,@Body JSONObject jsonObject);
-
+    Observable<ProductListResponseModel> getProductListByCatId(@HeaderMap Map<String, String> headers, @Body JSONObject jsonObject);
 
 
     @POST(Urls.GET_PRODUCT_DETAIL)
     @FormUrlEncoded
-    Observable<ProductDetail> getProductDetail(@HeaderMap  Map<String, String> headerMap, @FieldMap Map<String,String> body);
+    Observable<ProductDetail> getProductDetail(@HeaderMap Map<String, String> headerMap, @FieldMap Map<String, String> body);
 
     @POST(Urls.GET_CART_LIST)
     @FormUrlEncoded
@@ -69,4 +68,17 @@ public interface Service {
     @POST(Urls.REMOVE_CART)
     @FormUrlEncoded
     Observable<RemoveCartResponse> removeCart(@HeaderMap Map<String, String> headerMap, @FieldMap Map<String, String> body);
+
+    @POST(Urls.REGISTRATION)
+    @FormUrlEncoded
+    Observable<String> registration(@HeaderMap Map<String, String> headerMap, @FieldMap Map<String, String> body);
+
+    @POST(Urls.FORGOTPASSWORD)
+    @FormUrlEncoded
+    Observable<String> forgotPassword(@HeaderMap Map<String, String> headerMap, @FieldMap Map<String, String> body);
+
+    @POST(Urls.LOGIN)
+    @FormUrlEncoded
+    Observable<String> login(@HeaderMap Map<String, String> headerMap, @FieldMap Map<String, String> body);
+
 }

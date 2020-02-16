@@ -25,44 +25,44 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--<TextView
-            android:id="@+id/tvMinus"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:gravity="center"
-            android:padding="2dp"
-            android:text="-"
-            android:textColor="@color/md_grey_800"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+       <!--<TextView
+           android:id="@+id/tvMinus"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="16dp"
+           android:gravity="center"
+           android:padding="2dp"
+           android:text="-"
+           android:textColor="@color/md_grey_800"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/tvQuantity"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="2dp"
-            android:text="10"
-            android:textColor="@color/md_black_1000"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView5"
-            app:layout_constraintLeft_toRightOf="@+id/tvMinus" />
+       <TextView
+           android:id="@+id/tvQuantity"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:gravity="center"
+           android:padding="2dp"
+           android:text="10"
+           android:textColor="@color/md_black_1000"
+           android:textStyle="bold"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toStartOf="@+id/textView5"
+           app:layout_constraintLeft_toRightOf="@+id/tvMinus" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:gravity="center"
-            android:padding="2dp"
-            android:text="+"
-            android:textColor="@color/md_black_1000"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/guideline"
-            app:layout_constraintLeft_toRightOf="@+id/tvQuantity" />
+       <TextView
+           android:id="@+id/textView5"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_marginEnd="16dp"
+           android:gravity="center"
+           android:padding="2dp"
+           android:text="+"
+           android:textColor="@color/md_black_1000"
+           android:textStyle="bold"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="@id/guideline"
+           app:layout_constraintLeft_toRightOf="@+id/tvQuantity" />
 -->
         <TextView
             android:id="@+id/tvProductName"

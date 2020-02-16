@@ -29,4 +29,20 @@
     <string name="cart_is_empty_go_back_and_start_shopping">Cart is empty.Go back and start shopping!</string>
     <string name="cart_list">Cart List</string>
     <string name="check_out">Check Out</string>
+
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="i_have_read_and_agreed_terms_and_conditions">I have read and agreed Terms and Conditions</string>
+    <string name="submit">SUBMIT</string>
+    <string name="error_enter_email">Please enter email</string>
+    <string name="error_enter_password">Please enter password</string>
+    <string name="error_enter_confirm_password">Please enter confirm password</string>
+    <string name="error_enter_mobile_no">Please enter mobile number</string>
+    <string name="terms_and_conditions">Please check terms and conditions.</string>
+    <string name="error_enter_first_name">Please enter first name</string>
+    <string name="error_enter_last_name">Please enter last name</string>
+    <string name="register_now">Register Now</string>
+
 </resources>

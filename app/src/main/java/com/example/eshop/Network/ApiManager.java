@@ -64,6 +64,18 @@ public class ApiManager {
         return service.removeCart(headerMap,body);
     }
 
+    public Observable<String> registration(Map<String, String> headerMap, Map<String, String> body){
+        return service.registration(headerMap,body);
+    }
+
+    public Observable<String> forgotPassword(Map<String, String> headerMap, Map<String, String> body){
+        return service.forgotPassword(headerMap,body);
+    }
+
+    public Observable<String> login(Map<String, String> headerMap, Map<String, String> body){
+        return service.login(headerMap,body);
+    }
+
     private Retrofit provideRetrofit(){
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

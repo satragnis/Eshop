@@ -24,4 +24,9 @@ public class Constants {
     public static final String DELETE = "DELETE";
     public static final String CART = "CART";
     public static final String PRODUCT = "PRODUCT";
+    public static final String FIRST_NAME = "FIRST_NAME";
+    public static final String LAST_NAME = "LAST_NAME";
+    public static final String EMAIL_ADDRESS = "EMAIL_ADDRESS";
+    public static final String PASSWORD = "PASSWORD";
+    public static final String MOBILE_NO = "MOBILE_NO";
 }
